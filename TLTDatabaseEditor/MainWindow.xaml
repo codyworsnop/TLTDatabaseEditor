@@ -1,0 +1,44 @@
+﻿<Controls:MetroWindow x:Class="TLTDatabaseEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TLTDatabaseEditor"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        mc:Ignorable="d"
+                      
+        Title="TLT Database Editor" Height="450" Width="800"
+        BorderThickness="0"
+        WindowTitleBrush="{StaticResource DefaultBackgroundColor}">
+    <Controls:MetroWindow.Resources>
+        
+        <DataTemplate DataType="{x:Type local:SearchViewModel}">
+            <local:SearchView />
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type local:RoomViewModel}">
+            <local:RoomView />
+        </DataTemplate>
+        
+    </Controls:MetroWindow.Resources>
+    
+    <Grid Style="{StaticResource GridStyle}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="0" Margin="5">
+            <Button Style="{StaticResource BigButtonStyle}" Content="Search" Command="{Binding SearchCommand}"/>
+            <Button Style="{StaticResource BigButtonStyle}" Content="Building"/>
+            <Button Style="{StaticResource BigButtonStyle}" Content="Room" Command="{Binding RoomCommand}"/>
+            <Button Style="{StaticResource BigButtonStyle}" Content=". . ."/>
+        </StackPanel>
+
+        <ContentControl Grid.Row="1" Content="{Binding SelectedViewModel}"></ContentControl>
+    </Grid>
+</Controls:MetroWindow>
