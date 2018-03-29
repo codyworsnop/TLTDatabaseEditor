@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\Cody\Source\Repos\TLTDatabaseEditor\TLTDatabaseEditor\App.xaml
-41336717900
+4782600855
 
-16-500814540
+19-730361924
 161931282756
-BuildingView.xaml;MainWindow.xaml;RoomView.xaml;SearchView.xaml;
+AddBuildingView.xaml;AddRoomView.xaml;DashboardView.xaml;MainWindow.xaml;
 
 True
 

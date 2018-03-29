@@ -10,35 +10,27 @@
         Title="TLT Database Editor" Height="450" Width="800"
         BorderThickness="0"
         WindowTitleBrush="{StaticResource DefaultBackgroundColor}">
-    <Controls:MetroWindow.Resources>
-        
-        <DataTemplate DataType="{x:Type local:SearchViewModel}">
-            <local:SearchView />
-        </DataTemplate>
-        
-        <DataTemplate DataType="{x:Type local:RoomViewModel}">
-            <local:RoomView />
-        </DataTemplate>
-        
-    </Controls:MetroWindow.Resources>
     
     <Grid Style="{StaticResource GridStyle}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="0" Margin="5">
-            <Button Style="{StaticResource BigButtonStyle}" Content="Search" Command="{Binding SearchCommand}"/>
-            <Button Style="{StaticResource BigButtonStyle}" Content="Building"/>
-            <Button Style="{StaticResource BigButtonStyle}" Content="Room" Command="{Binding RoomCommand}"/>
-            <Button Style="{StaticResource BigButtonStyle}" Content=". . ."/>
-        </StackPanel>
+        <TabControl ItemsSource="{Binding Items}" Style="{StaticResource TabControlStyle}">
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding TabName}"/>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <TabControl.Resources>
+                <DataTemplate DataType="{x:Type local:DashboardViewModel}">
+                    <local:DashboardView />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type local:AddBuildingViewModel}">
+                    <local:AddBuildingView />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type local:AddRoomViewModel}">
+                    <local:AddRoomView />
+                </DataTemplate>
+            </TabControl.Resources>
+        </TabControl>
 
-        <ContentControl Grid.Row="1" Content="{Binding SelectedViewModel}"></ContentControl>
     </Grid>
 </Controls:MetroWindow>

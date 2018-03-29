@@ -24,7 +24,7 @@ namespace TLTDatabaseEditor
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = new NavigationViewModel();
+            this.DataContext = new TabContentViewModel();
         }
     }
 }

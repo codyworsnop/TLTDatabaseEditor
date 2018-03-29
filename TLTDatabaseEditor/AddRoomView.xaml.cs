@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace TLTDatabaseEditor
 {
     /// <summary>
-    /// Interaction logic for BuildingView.xaml
+    /// Interaction logic for AddRoomView.xaml
     /// </summary>
-    public partial class BuildingView : Page
+    public partial class AddRoomView : UserControl
     {
-        public BuildingView()
+        public AddRoomView()
         {
             InitializeComponent();
         }

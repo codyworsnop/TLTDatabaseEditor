@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace TLTDatabaseEditor
 {
-    class RoomViewModel
+    public class DashboardViewModel : ItemViewModel
     {
+        public DashboardViewModel(string tabName) : base(tabName)
+        {
+        }
     }
 }

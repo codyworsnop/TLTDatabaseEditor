@@ -16,12 +16,11 @@ using System.Windows.Shapes;
 namespace TLTDatabaseEditor
 {
     /// <summary>
-    /// Interaction logic for SearchViewModel.xaml
+    /// Interaction logic for DashboardView.xaml
     /// </summary>
-    public partial class SearchView
+    public partial class DashboardView : UserControl
     {
-
-        public SearchView()
+        public DashboardView()
         {
             InitializeComponent();
         }
