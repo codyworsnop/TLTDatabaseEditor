@@ -7,6 +7,28 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Label Content="DASHBOARD"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30*"/>
+            <ColumnDefinition Width="50*"/>
+            <ColumnDefinition Width="20*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="90*"/>
+            <RowDefinition Height="10*"/>
+        </Grid.RowDefinitions>
+
+
+        <Grid Grid.Column="0">
+            <ListView x:Name="thisgridsux" Style="{StaticResource ListViewStyle}"/>
+        </Grid>
+
+        <StackPanel Grid.Column="1">
+
+        </StackPanel>
+
+        <Grid Grid.Column="2" >
+            <Label Content="ROAD"/>
+        </Grid>
+
     </Grid>
 </UserControl>

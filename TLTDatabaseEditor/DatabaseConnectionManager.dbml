@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="TLT_Inventory" Class="DatabaseConnectionManagerDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=Coruscant;Initial Catalog=TLT_Inventory;Persist Security Info=True;User ID=tltinvfull" SettingsObjectName="TLTDatabaseEditor.Properties.Settings" SettingsPropertyName="TLT_InventoryConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Building" Member="Buildings">
+    <Type Name="Building">
+      <Column Name="BuildingID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="BuildingName" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="BuildingCode" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="Enabled" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>

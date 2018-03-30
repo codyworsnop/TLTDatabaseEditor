@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,9 +21,24 @@ namespace TLTDatabaseEditor
     /// </summary>
     public partial class DashboardView : UserControl
     {
+        DashboardModel _model = new DashboardModel();
+        public ObservableCollection<object> DBRawData = new ObservableCollection<object>();
+
         public DashboardView()
         {
             InitializeComponent();
+
+            if (_model.dc.DatabaseExists())
+            {
+                var buildingNames = _model.dc.Buildings.Select(x => x.BuildingName);
+
+                foreach (var building in buildingNames)
+                {
+                    DBRawData.Add(new ListViewItemViewModel(building));
+                }
+
+                thisgridsux.ItemsSource = DBRawData;
+            }
         }
     }
 }

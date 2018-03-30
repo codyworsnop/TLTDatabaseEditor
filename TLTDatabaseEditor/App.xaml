@@ -36,7 +36,62 @@
                 </Setter>
             </Style>
 
-     
+            <Style x:Key="ListViewStyle" TargetType="{x:Type ListView}">
+                <Setter Property="ItemContainerStyle">
+                    <Setter.Value>
+                        <Style TargetType="{x:Type ListViewItem}">
+                            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                            <Setter Property="OverridesDefaultStyle" Value="True"/>
+                            <Setter Property="SnapsToDevicePixels" Value="True"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                        <Grid Background="Transparent">
+                                            <Expander BorderThickness="2" Header="{Binding Title}" Foreground="White">
+                                                <ListView BorderThickness="0" ItemsSource="{Binding Title}" SelectedIndex="{Binding SelectedIndex}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible" VirtualizingPanel.ScrollUnit="Pixel" >
+                                                    <ListView.ItemContainerStyle>
+                                                        <Style TargetType="ListViewItem">
+                                                            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                                            <Setter Property="OverridesDefaultStyle" Value="True"/>
+                                                            <Setter Property="SnapsToDevicePixels" Value="True"/>
+                                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                                                        <Border Height="Auto" Name="ContentBorder" BorderBrush="{StaticResource DefaultFontColor}" BorderThickness="0,0,0,1" Visibility="Visible" >
+                                                                            <Grid>
+                                                                                <Grid.ColumnDefinitions>
+                                                                                    <ColumnDefinition Width="15" />
+                                                                                    <ColumnDefinition Width="*" />
+                                                                                </Grid.ColumnDefinitions>
+                                                                                <Grid Name="selectCol" Grid.Column="0" Background="White" />
+                                                                                <Label Grid.Column="1" Foreground="{StaticResource DefaultFontColor}" Content="{Binding Title}" />
+                                                                            </Grid>
+                                                                        </Border>
+                                                                        <ControlTemplate.Triggers>
+                                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                                <Setter Property="Background" TargetName="selectCol"  Value="{StaticResource DefaultFontColor}" />
+                                                                                <Setter Property="BorderBrush" TargetName="ContentBorder" Value="{StaticResource DefaultFontColor}" />
+                                                                            </Trigger>
+                                                                        </ControlTemplate.Triggers>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Style>
+                                                    </ListView.ItemContainerStyle>
+                                                </ListView>
+                                            </Expander>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+            </Style>     
 
         </ResourceDictionary>
     </Application.Resources>
