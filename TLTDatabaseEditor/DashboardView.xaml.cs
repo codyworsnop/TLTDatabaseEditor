@@ -21,23 +21,24 @@ namespace TLTDatabaseEditor
     /// </summary>
     public partial class DashboardView : UserControl
     {
-        DashboardModel _model = new DashboardModel();
-        public ObservableCollection<object> DBRawData = new ObservableCollection<object>();
+        DashboardViewModel _viewModel = new DashboardViewModel();
 
         public DashboardView()
         {
             InitializeComponent();
+            this.DataContext = _viewModel;
+        }
 
-            if (_model.dc.DatabaseExists())
+        private void BuildingSelectionChangedHandler(object sender, SelectionChangedEventArgs e)
+        {
+            _viewModel.BuildingSelected(e.AddedItems[0].ToString());
+        }
+
+        private void ClassroomSelectionChangedHandler(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count > 0)
             {
-                var buildingNames = _model.dc.Buildings.Select(x => x.BuildingName);
-
-                foreach (var building in buildingNames)
-                {
-                    DBRawData.Add(new ListViewItemViewModel(building));
-                }
-
-                thisgridsux.ItemsSource = DBRawData;
+                _viewModel.RoomSelected(e.AddedItems[0].ToString());
             }
         }
     }

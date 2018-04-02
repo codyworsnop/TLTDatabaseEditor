@@ -12,20 +12,21 @@
             <ColumnDefinition Width="50*"/>
             <ColumnDefinition Width="20*"/>
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="90*"/>
-            <RowDefinition Height="10*"/>
-        </Grid.RowDefinitions>
-
 
         <Grid Grid.Column="0">
-            <ListView x:Name="thisgridsux" Style="{StaticResource ListViewStyle}"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50*"/>
+                <RowDefinition Height="50*"/>
+            </Grid.RowDefinitions>
+
+            <ListView Grid.Row="0" ItemsSource="{Binding DBBuildings}" SelectionChanged="BuildingSelectionChangedHandler" SelectionMode="Single"/>
+
+            <ListView Grid.Row="1" ItemsSource="{Binding DBClassrooms}" SelectionChanged="ClassroomSelectionChangedHandler" SelectionMode="Single"/>
         </Grid>
 
-        <StackPanel Grid.Column="1">
-
-        </StackPanel>
-
+        <Grid Grid.Column="1">
+            <ListView ItemsSource="{Binding RoomFeatures}"/>
+        </Grid>
         <Grid Grid.Column="2" >
             <Label Content="ROAD"/>
         </Grid>

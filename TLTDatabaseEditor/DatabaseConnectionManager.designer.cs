@@ -33,6 +33,15 @@ namespace TLTDatabaseEditor
     partial void InsertBuilding(Building instance);
     partial void UpdateBuilding(Building instance);
     partial void DeleteBuilding(Building instance);
+    partial void InsertClassroom(Classroom instance);
+    partial void UpdateClassroom(Classroom instance);
+    partial void DeleteClassroom(Classroom instance);
+    partial void InsertClassroomFeatureDesc(ClassroomFeatureDesc instance);
+    partial void UpdateClassroomFeatureDesc(ClassroomFeatureDesc instance);
+    partial void DeleteClassroomFeatureDesc(ClassroomFeatureDesc instance);
+    partial void InsertFeatureDesc(FeatureDesc instance);
+    partial void UpdateFeatureDesc(FeatureDesc instance);
+    partial void DeleteFeatureDesc(FeatureDesc instance);
     #endregion
 		
 		public DatabaseConnectionManagerDataContext() : 
@@ -70,6 +79,30 @@ namespace TLTDatabaseEditor
 			get
 			{
 				return this.GetTable<Building>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Classroom> Classrooms
+		{
+			get
+			{
+				return this.GetTable<Classroom>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ClassroomFeatureDesc> ClassroomFeatureDescs
+		{
+			get
+			{
+				return this.GetTable<ClassroomFeatureDesc>();
+			}
+		}
+		
+		public System.Data.Linq.Table<FeatureDesc> FeatureDescs
+		{
+			get
+			{
+				return this.GetTable<FeatureDesc>();
 			}
 		}
 	}
@@ -183,6 +216,312 @@ namespace TLTDatabaseEditor
 					this._Enabled = value;
 					this.SendPropertyChanged("Enabled");
 					this.OnEnabledChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Classroom")]
+	public partial class Classroom : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _RoomNumber;
+		
+		private int _BuildingID;
+		
+		private System.Nullable<bool> _Enabled;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnRoomNumberChanging(string value);
+    partial void OnRoomNumberChanged();
+    partial void OnBuildingIDChanging(int value);
+    partial void OnBuildingIDChanged();
+    partial void OnEnabledChanging(System.Nullable<bool> value);
+    partial void OnEnabledChanged();
+    #endregion
+		
+		public Classroom()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RoomNumber", DbType="VarChar(255) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string RoomNumber
+		{
+			get
+			{
+				return this._RoomNumber;
+			}
+			set
+			{
+				if ((this._RoomNumber != value))
+				{
+					this.OnRoomNumberChanging(value);
+					this.SendPropertyChanging();
+					this._RoomNumber = value;
+					this.SendPropertyChanged("RoomNumber");
+					this.OnRoomNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BuildingID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int BuildingID
+		{
+			get
+			{
+				return this._BuildingID;
+			}
+			set
+			{
+				if ((this._BuildingID != value))
+				{
+					this.OnBuildingIDChanging(value);
+					this.SendPropertyChanging();
+					this._BuildingID = value;
+					this.SendPropertyChanged("BuildingID");
+					this.OnBuildingIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Enabled", DbType="Bit")]
+		public System.Nullable<bool> Enabled
+		{
+			get
+			{
+				return this._Enabled;
+			}
+			set
+			{
+				if ((this._Enabled != value))
+				{
+					this.OnEnabledChanging(value);
+					this.SendPropertyChanging();
+					this._Enabled = value;
+					this.SendPropertyChanged("Enabled");
+					this.OnEnabledChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ClassroomFeatureDesc")]
+	public partial class ClassroomFeatureDesc : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _FeatureDescID;
+		
+		private string _RoomNumber;
+		
+		private int _BuildingID;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnFeatureDescIDChanging(int value);
+    partial void OnFeatureDescIDChanged();
+    partial void OnRoomNumberChanging(string value);
+    partial void OnRoomNumberChanged();
+    partial void OnBuildingIDChanging(int value);
+    partial void OnBuildingIDChanged();
+    #endregion
+		
+		public ClassroomFeatureDesc()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FeatureDescID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int FeatureDescID
+		{
+			get
+			{
+				return this._FeatureDescID;
+			}
+			set
+			{
+				if ((this._FeatureDescID != value))
+				{
+					this.OnFeatureDescIDChanging(value);
+					this.SendPropertyChanging();
+					this._FeatureDescID = value;
+					this.SendPropertyChanged("FeatureDescID");
+					this.OnFeatureDescIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RoomNumber", DbType="VarChar(255) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string RoomNumber
+		{
+			get
+			{
+				return this._RoomNumber;
+			}
+			set
+			{
+				if ((this._RoomNumber != value))
+				{
+					this.OnRoomNumberChanging(value);
+					this.SendPropertyChanging();
+					this._RoomNumber = value;
+					this.SendPropertyChanged("RoomNumber");
+					this.OnRoomNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BuildingID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int BuildingID
+		{
+			get
+			{
+				return this._BuildingID;
+			}
+			set
+			{
+				if ((this._BuildingID != value))
+				{
+					this.OnBuildingIDChanging(value);
+					this.SendPropertyChanging();
+					this._BuildingID = value;
+					this.SendPropertyChanged("BuildingID");
+					this.OnBuildingIDChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.FeatureDesc")]
+	public partial class FeatureDesc : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _FeatureDescID;
+		
+		private string _Description;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnFeatureDescIDChanging(int value);
+    partial void OnFeatureDescIDChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    #endregion
+		
+		public FeatureDesc()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FeatureDescID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int FeatureDescID
+		{
+			get
+			{
+				return this._FeatureDescID;
+			}
+			set
+			{
+				if ((this._FeatureDescID != value))
+				{
+					this.OnFeatureDescIDChanging(value);
+					this.SendPropertyChanging();
+					this._FeatureDescID = value;
+					this.SendPropertyChanged("FeatureDescID");
+					this.OnFeatureDescIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="VarChar(255)")]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
 				}
 			}
 		}
