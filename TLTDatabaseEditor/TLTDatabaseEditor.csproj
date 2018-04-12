@@ -43,6 +43,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -64,14 +66,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AddBuildingView.xaml.cs">
-      <DependentUpon>AddBuildingView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="AddBuildingViewModel.cs" />
-    <Compile Include="AddRoomView.xaml.cs">
-      <DependentUpon>AddRoomView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="AddRoomViewModel.cs" />
     <Compile Include="DashboardModel.cs" />
     <Compile Include="DashboardView.xaml.cs">
       <DependentUpon>DashboardView.xaml</DependentUpon>
@@ -82,20 +76,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DatabaseConnectionManager.dbml</DependentUpon>
     </Compile>
+    <Compile Include="ExportDataView.xaml.cs">
+      <DependentUpon>ExportDataView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ExportDataViewModel.cs" />
     <Compile Include="ItemViewModel.cs" />
     <Compile Include="ListViewItemViewModel.cs" />
     <Compile Include="RelayCommand.cs" />
+    <Compile Include="RoomFeatureIDataItemViewModel.cs" />
     <Compile Include="TabContentViewModel.cs" />
     <Compile Include="ViewModelBase.cs" />
-    <Page Include="AddBuildingView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="AddRoomView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="DashboardView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ExportDataView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

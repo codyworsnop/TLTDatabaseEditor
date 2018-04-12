@@ -105,6 +105,30 @@ namespace TLTDatabaseEditor
 				return this.GetTable<FeatureDesc>();
 			}
 		}
+		
+		public System.Data.Linq.Table<BuildingQuery> BuildingQueries
+		{
+			get
+			{
+				return this.GetTable<BuildingQuery>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ClassroomQuery> ClassroomQueries
+		{
+			get
+			{
+				return this.GetTable<ClassroomQuery>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ClassroomFeatureDescQuery> ClassroomFeatureDescQueries
+		{
+			get
+			{
+				return this.GetTable<ClassroomFeatureDescQuery>();
+			}
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Building")]
@@ -543,6 +567,213 @@ namespace TLTDatabaseEditor
 			if ((this.PropertyChanged != null))
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="")]
+	public partial class BuildingQuery
+	{
+		
+		private string _BuildingID;
+		
+		private string _BuildingName;
+		
+		private string _BuildingCode;
+		
+		private string _Enabled;
+		
+		public BuildingQuery()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BuildingID", CanBeNull=false)]
+		public string BuildingID
+		{
+			get
+			{
+				return this._BuildingID;
+			}
+			set
+			{
+				if ((this._BuildingID != value))
+				{
+					this._BuildingID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BuildingName", CanBeNull=false)]
+		public string BuildingName
+		{
+			get
+			{
+				return this._BuildingName;
+			}
+			set
+			{
+				if ((this._BuildingName != value))
+				{
+					this._BuildingName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BuildingCode", CanBeNull=false)]
+		public string BuildingCode
+		{
+			get
+			{
+				return this._BuildingCode;
+			}
+			set
+			{
+				if ((this._BuildingCode != value))
+				{
+					this._BuildingCode = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Enabled", CanBeNull=false)]
+		public string Enabled
+		{
+			get
+			{
+				return this._Enabled;
+			}
+			set
+			{
+				if ((this._Enabled != value))
+				{
+					this._Enabled = value;
+				}
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="")]
+	public partial class ClassroomQuery
+	{
+		
+		private string _RoomNumber;
+		
+		private string _BuildingID;
+		
+		private string _Enabled;
+		
+		public ClassroomQuery()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RoomNumber", CanBeNull=false)]
+		public string RoomNumber
+		{
+			get
+			{
+				return this._RoomNumber;
+			}
+			set
+			{
+				if ((this._RoomNumber != value))
+				{
+					this._RoomNumber = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BuildingID", CanBeNull=false)]
+		public string BuildingID
+		{
+			get
+			{
+				return this._BuildingID;
+			}
+			set
+			{
+				if ((this._BuildingID != value))
+				{
+					this._BuildingID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Enabled", CanBeNull=false)]
+		public string Enabled
+		{
+			get
+			{
+				return this._Enabled;
+			}
+			set
+			{
+				if ((this._Enabled != value))
+				{
+					this._Enabled = value;
+				}
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="")]
+	public partial class ClassroomFeatureDescQuery
+	{
+		
+		private string _FeatureDescID;
+		
+		private string _RoomNumber;
+		
+		private string _BuildingID;
+		
+		public ClassroomFeatureDescQuery()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FeatureDescID", CanBeNull=false)]
+		public string FeatureDescID
+		{
+			get
+			{
+				return this._FeatureDescID;
+			}
+			set
+			{
+				if ((this._FeatureDescID != value))
+				{
+					this._FeatureDescID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RoomNumber", CanBeNull=false)]
+		public string RoomNumber
+		{
+			get
+			{
+				return this._RoomNumber;
+			}
+			set
+			{
+				if ((this._RoomNumber != value))
+				{
+					this._RoomNumber = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BuildingID", CanBeNull=false)]
+		public string BuildingID
+		{
+			get
+			{
+				return this._BuildingID;
+			}
+			set
+			{
+				if ((this._BuildingID != value))
+				{
+					this._BuildingID = value;
+				}
 			}
 		}
 	}

@@ -13,7 +13,7 @@
     
     <Grid Style="{StaticResource GridStyle}">
 
-        <TabControl ItemsSource="{Binding Items}" Style="{StaticResource TabControlStyle}">
+        <TabControl SelectedIndex="0" ItemsSource="{Binding Items}" Style="{StaticResource TabControlStyle}">
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding TabName}"/>
@@ -23,11 +23,9 @@
                 <DataTemplate DataType="{x:Type local:DashboardViewModel}">
                     <local:DashboardView />
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type local:AddBuildingViewModel}">
-                    <local:AddBuildingView />
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type local:AddRoomViewModel}">
-                    <local:AddRoomView />
+
+                <DataTemplate DataType="{x:Type local:ExportDataViewModel}">
+                    <local:ExportDataView />
                 </DataTemplate>
             </TabControl.Resources>
         </TabControl>

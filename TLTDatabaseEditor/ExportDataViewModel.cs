@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace TLTDatabaseEditor
 {
-    class AddRoomViewModel : ItemViewModel
+    public class ExportDataViewModel : ItemViewModel
     {
-        public AddRoomViewModel(string tabName) : base(tabName)
+        public ExportDataViewModel(string tabName) : base(tabName)
         {
+
         }
     }
 }

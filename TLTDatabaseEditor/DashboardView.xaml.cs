@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace TLTDatabaseEditor
 {
@@ -21,7 +22,7 @@ namespace TLTDatabaseEditor
     /// </summary>
     public partial class DashboardView : UserControl
     {
-        DashboardViewModel _viewModel = new DashboardViewModel();
+        DashboardViewModel _viewModel = new DashboardViewModel(DialogCoordinator.Instance);
 
         public DashboardView()
         {
@@ -31,15 +32,55 @@ namespace TLTDatabaseEditor
 
         private void BuildingSelectionChangedHandler(object sender, SelectionChangedEventArgs e)
         {
-            _viewModel.BuildingSelected(e.AddedItems[0].ToString());
+            _viewModel.BuildingSelected(((Building)e.AddedItems[0]).BuildingName.ToString());
         }
 
         private void ClassroomSelectionChangedHandler(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count > 0)
             {
-                _viewModel.RoomSelected(e.AddedItems[0].ToString());
+                _viewModel.RoomSelected(((Classroom)e.AddedItems[0]).RoomNumber.ToString());
             }
+
+            _viewModel.ClearFeatureChanges();
+        }
+
+        private void FeatureCheckedHandler(object sender, RoutedEventArgs e)
+        {
+            var updatedFeature = ((RoomFeatureIDataItemViewModel)((CheckBox)sender).DataContext).Feature.Description;
+            _viewModel.FeatureChecked(updatedFeature);
+            AddListView.Items.Refresh();
+            RemoveListView.Items.Refresh();
+        }
+
+        private void FeatureUncheckedHandler(object sender, RoutedEventArgs e)
+        {
+            var updatedFeature = ((RoomFeatureIDataItemViewModel)((CheckBox)sender).DataContext).Feature.Description;
+            _viewModel.FeatureUnchecked(updatedFeature);
+            AddListView.Items.Refresh();
+            RemoveListView.Items.Refresh();
+        }
+
+        private void CommitChangesHandler(object sender, RoutedEventArgs e)
+        {
+            _viewModel.CommitChanges();
+
+            BuildingsDataGrid.Items.Refresh();
+            RoomDataGrid.Items.Refresh();
+        }
+
+        private void AddBuildingHandler(object sender, RoutedEventArgs e)
+        {
+            _viewModel.AddBuilding();
+           // _viewModel.ClearAddBuildingText();
+           // BuildingsDataGrid.Items.Refresh();
+        }
+
+        private void AddRoomHandler(object sender, RoutedEventArgs e)
+        {
+            _viewModel.AddClassroom();
+           // _viewModel.ClearAddClassroomText();
+            //RoomDataGrid.Items.Refresh();
         }
     }
 }

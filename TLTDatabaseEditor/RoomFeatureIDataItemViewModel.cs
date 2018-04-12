@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace TLTDatabaseEditor
 {
-    class AddBuildingViewModel : ItemViewModel
+    public class RoomFeatureIDataItemViewModel
     {
-        public AddBuildingViewModel(string tabName) : base(tabName)
-        {
-        }
+        public FeatureDesc Feature { get; set; }
+
+        public bool FeatureIsEnabled { get; set; }
     }
 }

@@ -16,8 +16,7 @@ namespace TLTDatabaseEditor
         public TabContentViewModel()
         {
             this.Items.Add(new DashboardViewModel("DASHBOARD"));
-            this.Items.Add(new AddRoomViewModel("ADD ROOM"));
-            this.Items.Add(new AddBuildingViewModel("ADD BUILDING"));
+            this.Items.Add(new ExportDataViewModel("EXPORT"));
         }
     }
 }
