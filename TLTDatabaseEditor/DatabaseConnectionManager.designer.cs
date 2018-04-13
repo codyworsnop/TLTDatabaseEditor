@@ -129,6 +129,14 @@ namespace TLTDatabaseEditor
 				return this.GetTable<ClassroomFeatureDescQuery>();
 			}
 		}
+		
+		public System.Data.Linq.Table<vBuildingRoomFeature> vBuildingRoomFeatures
+		{
+			get
+			{
+				return this.GetTable<vBuildingRoomFeature>();
+			}
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Building")]
@@ -773,6 +781,105 @@ namespace TLTDatabaseEditor
 				if ((this._BuildingID != value))
 				{
 					this._BuildingID = value;
+				}
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.vBuildingRoomFeatures")]
+	public partial class vBuildingRoomFeature
+	{
+		
+		private string _BuildingName;
+		
+		private string _BuildingCode;
+		
+		private int _BuildingID;
+		
+		private string _RoomNumber;
+		
+		private string _Description;
+		
+		public vBuildingRoomFeature()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BuildingName", DbType="VarChar(255)")]
+		public string BuildingName
+		{
+			get
+			{
+				return this._BuildingName;
+			}
+			set
+			{
+				if ((this._BuildingName != value))
+				{
+					this._BuildingName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BuildingCode", DbType="VarChar(255)")]
+		public string BuildingCode
+		{
+			get
+			{
+				return this._BuildingCode;
+			}
+			set
+			{
+				if ((this._BuildingCode != value))
+				{
+					this._BuildingCode = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BuildingID", DbType="Int NOT NULL")]
+		public int BuildingID
+		{
+			get
+			{
+				return this._BuildingID;
+			}
+			set
+			{
+				if ((this._BuildingID != value))
+				{
+					this._BuildingID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RoomNumber", DbType="VarChar(255) NOT NULL", CanBeNull=false)]
+		public string RoomNumber
+		{
+			get
+			{
+				return this._RoomNumber;
+			}
+			set
+			{
+				if ((this._RoomNumber != value))
+				{
+					this._RoomNumber = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="VarChar(255)")]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this._Description = value;
 				}
 			}
 		}

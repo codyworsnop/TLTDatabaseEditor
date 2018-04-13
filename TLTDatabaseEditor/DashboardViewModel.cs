@@ -55,6 +55,7 @@ namespace TLTDatabaseEditor
             if (result == MessageDialogResult.Affirmative)
             {
                 _model.AddBuilding(AddBuildingName, AddBuildingCode, AddBuildingIsEnabled);
+                ClearAddBuildingText();
             }
         }
 
@@ -83,6 +84,7 @@ namespace TLTDatabaseEditor
                 if (result == MessageDialogResult.Affirmative)
                 {
                     _model.AddClassroom(buildingId.Value, AddRoomName, AddRoomIsEnabled);
+                    ClearAddBuildingText();
                 }
             }
         }

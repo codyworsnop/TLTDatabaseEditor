@@ -9,8 +9,6 @@ namespace TLTDatabaseEditor
 {
     public class DashboardModel
     {
-
-
         public DatabaseConnectionManagerDataContext dc = new DatabaseConnectionManagerDataContext(Properties.Settings.Default.TLT_InventoryConnectionString);
 
         private IQueryable<int> _buildingId;
@@ -24,7 +22,6 @@ namespace TLTDatabaseEditor
         {
             if (dc.DatabaseExists())
             {
-
                 var result = dc.ExecuteQuery<BuildingQuery>(@"INSERT INTO Building VALUES ({0}, {1}, {2})", BuildingName, BuildingCode, IsEnabled);
             }
         }

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="DatabaseConnectionManager">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 9.75" name="DatabaseConnectionManager">
   <DataContextMoniker Name="/DatabaseConnectionManagerDataContext" />
   <nestedChildShapes>
     <classShape Id="74da9a13-d3e9-4e23-93ca-0d04f6fb48cc" absoluteBounds="3.5, 0.5, 2, 1.5785953776041666">
@@ -42,6 +42,12 @@
       <DataClassMoniker Name="/DatabaseConnectionManagerDataContext/ClassroomFeatureDescQuery" />
       <nestedChildShapes>
         <elementListCompartment Id="ae831d74-7fe7-4fef-be59-eb2f43bc0bc0" absoluteBounds="1.14, 6.46, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="4c0ae5e8-e994-4a4e-88e2-4e6299c66a05" absoluteBounds="3.75, 7.75, 2, 1.7708968098958331">
+      <DataClassMoniker Name="/DatabaseConnectionManagerDataContext/vBuildingRoomFeature" />
+      <nestedChildShapes>
+        <elementListCompartment Id="15a89ffc-97b2-41c2-913a-067f23a13a69" absoluteBounds="3.7649999999999997, 8.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>

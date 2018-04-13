@@ -72,15 +72,11 @@ namespace TLTDatabaseEditor
         private void AddBuildingHandler(object sender, RoutedEventArgs e)
         {
             _viewModel.AddBuilding();
-           // _viewModel.ClearAddBuildingText();
-           // BuildingsDataGrid.Items.Refresh();
         }
 
         private void AddRoomHandler(object sender, RoutedEventArgs e)
         {
             _viewModel.AddClassroom();
-           // _viewModel.ClearAddClassroomText();
-            //RoomDataGrid.Items.Refresh();
         }
     }
 }

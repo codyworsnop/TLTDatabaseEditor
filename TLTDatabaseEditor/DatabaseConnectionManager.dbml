@@ -38,16 +38,25 @@
   </Table>
   <Table Name="" Member="ClassroomQueries">
     <Type Name="ClassroomQuery">
-      <Column Member="RoomNumber" Type="System.String" CanBeNull="false" />
-      <Column Member="BuildingID" Type="System.String" CanBeNull="false" />
-      <Column Member="Enabled" Type="System.String" CanBeNull="false" />
+      <Column Name="RoomNumber" Type="System.String" CanBeNull="false" />
+      <Column Name="BuildingID" Type="System.String" CanBeNull="false" />
+      <Column Name="Enabled" Type="System.String" CanBeNull="false" />
     </Type>
   </Table>
   <Table Name="" Member="ClassroomFeatureDescQueries">
     <Type Name="ClassroomFeatureDescQuery">
-      <Column Member="FeatureDescID" Type="System.String" CanBeNull="false" />
-      <Column Member="RoomNumber" Type="System.String" CanBeNull="false" />
-      <Column Member="BuildingID" Type="System.String" CanBeNull="false" />
+      <Column Name="FeatureDescID" Type="System.String" CanBeNull="false" />
+      <Column Name="RoomNumber" Type="System.String" CanBeNull="false" />
+      <Column Name="BuildingID" Type="System.String" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.vBuildingRoomFeatures" Member="vBuildingRoomFeatures">
+    <Type Name="vBuildingRoomFeature">
+      <Column Name="BuildingName" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="BuildingCode" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="BuildingID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RoomNumber" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
     </Type>
   </Table>
 </Database>

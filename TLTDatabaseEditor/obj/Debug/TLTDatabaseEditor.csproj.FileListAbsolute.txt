@@ -86,3 +86,32 @@ C:\Users\tltcomptech\Documents\TLTDatabaseEditor\TLTDatabaseEditor\obj\Debug\TLT
 \\storage\tlt\Student Techs\Cody\website\TLTDatabaseEditor\TLTDatabaseEditor\obj\Debug\TLTDatabaseEditor.pdb
 \\storage\tlt\Student Techs\Cody\website\TLTDatabaseEditor\TLTDatabaseEditor\obj\Debug\ExportDataView.g.cs
 \\storage\tlt\Student Techs\Cody\website\TLTDatabaseEditor\TLTDatabaseEditor\obj\Debug\ExportDataView.baml
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\bin\Debug\TLTDatabaseEditor.exe.config
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\bin\Debug\TLTDatabaseEditor.exe
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\bin\Debug\TLTDatabaseEditor.pdb
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\bin\Debug\ControlzEx.dll
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\bin\Debug\MahApps.Metro.dll
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\bin\Debug\ControlzEx.pdb
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\bin\Debug\MahApps.Metro.pdb
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\bin\Debug\MahApps.Metro.xml
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\obj\Debug\TLTDatabaseEditor.csprojResolveAssemblyReference.cache
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\obj\Debug\TLTDatabaseEditor.csproj.ResolveComReference.cache
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\obj\Debug\DashboardView.g.cs
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\obj\Debug\ExportDataView.g.cs
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\obj\Debug\MainWindow.g.cs
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\obj\Debug\App.g.cs
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\obj\Debug\TLTDatabaseEditor_MarkupCompile.cache
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\obj\Debug\TLTDatabaseEditor_MarkupCompile.lref
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\obj\Debug\App.baml
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\obj\Debug\DashboardView.baml
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\obj\Debug\ExportDataView.baml
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\obj\Debug\MainWindow.baml
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\obj\Debug\TLTDatabaseEditor.g.resources
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\obj\Debug\TLTDatabaseEditor.Properties.Resources.resources
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\obj\Debug\TLTDatabaseEditor.csproj.GenerateResource.cache
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\obj\Debug\TLTDatabaseEditor.csproj.CoreCompileInputs.cache
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\obj\Debug\TLTDatabaseEditor.csproj.CopyComplete
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\obj\Debug\TLTDatabaseEditor.exe
+C:\Users\codyworsnop\Documents\TLTDatabaseEditor\TLTDatabaseEditor\obj\Debug\TLTDatabaseEditor.pdb

@@ -20,9 +20,17 @@ namespace TLTDatabaseEditor
     /// </summary>
     public partial class ExportDataView : UserControl
     {
+        ExportDataViewModel _viewModel = new ExportDataViewModel(); 
+
         public ExportDataView()
         {
             InitializeComponent();
+            DataContext = _viewModel;
+        }
+
+        private void ExportAllHandler(object sender, RoutedEventArgs e)
+        {
+            _viewModel.ExportToExcel();
         }
     }
 }
