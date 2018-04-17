@@ -12,8 +12,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using MahApps.Metro.Controls.Dialogs;
+using System.Windows.Shapes;
 
 namespace TLTDatabaseEditor
 {
@@ -47,7 +47,7 @@ namespace TLTDatabaseEditor
 
         private void FeatureCheckedHandler(object sender, RoutedEventArgs e)
         {
-            var updatedFeature = ((RoomFeatureIDataItemViewModel)((CheckBox)sender).DataContext).Feature.Description;
+            var updatedFeature = ((RoomFeatureDataItemViewModel)((CheckBox)sender).DataContext).Feature.Description;
             _viewModel.FeatureChecked(updatedFeature);
             AddListView.Items.Refresh();
             RemoveListView.Items.Refresh();
@@ -55,7 +55,7 @@ namespace TLTDatabaseEditor
 
         private void FeatureUncheckedHandler(object sender, RoutedEventArgs e)
         {
-            var updatedFeature = ((RoomFeatureIDataItemViewModel)((CheckBox)sender).DataContext).Feature.Description;
+            var updatedFeature = ((RoomFeatureDataItemViewModel)((CheckBox)sender).DataContext).Feature.Description;
             _viewModel.FeatureUnchecked(updatedFeature);
             AddListView.Items.Refresh();
             RemoveListView.Items.Refresh();
@@ -77,6 +77,32 @@ namespace TLTDatabaseEditor
         private void AddRoomHandler(object sender, RoutedEventArgs e)
         {
             _viewModel.AddClassroom();
+        }
+
+        private void AddControlTypeHandler(object sender, RoutedEventArgs e)
+        {
+            _viewModel.SetControlType(((ComboBox)sender).SelectedItem.ToString());
+        }
+
+        private void AddRoomTypeHandler(object sender, RoutedEventArgs e)
+        {
+            _viewModel.SetRoomType(((ComboBox)sender).SelectedItem.ToString());
+        }
+
+        private void ControlTypeCheckedHandler(object sender, RoutedEventArgs e)
+        {
+            var updatedFeature = ((ControlTypeViewModel)((CheckBox)sender).DataContext).Type.Description;
+            _viewModel.ControlTypeChecked(updatedFeature);
+            RemoveControlTypeListView.Items.Refresh();
+            AddControlTypeListView.Items.Refresh();
+        }
+
+        private void ControlTypeUncheckedHandler(object sender, RoutedEventArgs e)
+        {
+            var updatedFeature = ((ControlTypeViewModel)((CheckBox)sender).DataContext).Type.Description;
+            _viewModel.ControlTypeUnchecked(updatedFeature);
+            RemoveControlTypeListView.Items.Refresh();
+            AddControlTypeListView.Items.Refresh();
         }
     }
 }

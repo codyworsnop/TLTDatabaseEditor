@@ -18,6 +18,66 @@ namespace TLTDatabaseEditor
 
         }
 
+        public List<ControlTypeViewModel> GetRoomControlTypes(string roomNumber, string buildingName)
+        {
+            if (dc.DatabaseExists())
+            {
+                var typeList = new List<ControlTypeViewModel>();
+                var types = dc.ControlTypes;
+                var _buildingId = dc.Buildings.Where(x => x.BuildingName == buildingName && x.Enabled == true).Select(x => x.BuildingID);
+
+                foreach (var type in types)
+                {
+                    var roomHasType = dc.Classrooms.Where(x => x.BuildingID == _buildingId.First() && x.RoomNumber == roomNumber).Select(x => x.ControlType).First() == type.ControlTypeID ? true : false;               
+                    typeList.Add(new ControlTypeViewModel() { Type = type, RoomHasType = roomHasType });
+                }
+
+                return typeList;
+            }
+
+            return null;
+        }
+
+        public List<RoomTypeViewModel> GetRoomDescTypes(string roomNumber, string buildingName)
+        {
+            if (dc.DatabaseExists())
+            {
+                var typeList = new List<RoomTypeViewModel>();
+                var types = dc.TypeDescs;
+                var _buildingId = dc.Buildings.Where(x => x.BuildingName == buildingName && x.Enabled == true).Select(x => x.BuildingID);
+
+                foreach (var type in types)
+                {
+                    var roomHasType = dc.Classrooms.Where(x => x.BuildingID == _buildingId.First() && x.RoomNumber == roomNumber).Select(x => x.TypeID).First() == type.TypeDescID ? true : false;
+                    typeList.Add(new RoomTypeViewModel() { Type = type, RoomHasType = roomHasType });
+                }
+
+                return typeList;
+            }
+
+            return null;
+        }
+
+        public List<string> GetRoomControlTypes()
+        {
+            if (dc.DatabaseExists())
+            {
+                return dc.ControlTypes.Select(x => x.Description).ToList();
+            }
+          
+            return null;
+        }
+
+        public List<string> GetRoomTypes()
+        {
+            if (dc.DatabaseExists())
+            {
+                return dc.ExecuteQuery<TypeDesc>(@"SELECT * FROM TypeDesc").Select(x => x.Description).ToList();
+            }
+
+            return null;
+        }
+
         public void AddBuilding(string BuildingName, string BuildingCode, bool IsEnabled)
         {
             if (dc.DatabaseExists())
@@ -26,12 +86,13 @@ namespace TLTDatabaseEditor
             }
         }
 
-        public void AddClassroom(int BuildingID, string RoomNumber, bool IsEnabled)
+        public void AddClassroom(int BuildingID, string RoomNumber, string TypeDesc, string ControlType, int Capacity, bool IsEnabled)
         {
             if (dc.DatabaseExists())
             {
-
-                var result = dc.ExecuteQuery<ClassroomQuery>(@"INSERT INTO Classroom VALUES ({0}, {1}, {2})", RoomNumber, BuildingID, IsEnabled);
+                var controlTypeID = dc.ControlTypes.Where(x => x.Description == ControlType).Select(x => x.ControlTypeID).First();
+                var TypeDescID = dc.TypeDescs.Where(x => x.Description == TypeDesc).Select(x => x.TypeDescID).First();
+                var result = dc.ExecuteQuery<ClassroomQuery>(@"INSERT INTO Classroom VALUES ({0}, {1}, {2}, {3}, {4}, {5})", RoomNumber, BuildingID, TypeDescID, Capacity, controlTypeID, IsEnabled);
             }
         }
 
@@ -120,11 +181,11 @@ namespace TLTDatabaseEditor
             return null;
         }
 
-        public List<RoomFeatureIDataItemViewModel> GetRoomFeatures(string classroomNumber)
+        public List<RoomFeatureDataItemViewModel> GetRoomFeatures(string classroomNumber)
         {
             if (dc.DatabaseExists())
             {
-                var featureList = new List<RoomFeatureIDataItemViewModel>();
+                var featureList = new List<RoomFeatureDataItemViewModel>();
 
                 var featureId = dc.ClassroomFeatureDescs.Where(x => x.RoomNumber == classroomNumber && x.BuildingID == _buildingId.First()).Select(x => x.FeatureDescID);
 
@@ -133,7 +194,7 @@ namespace TLTDatabaseEditor
                     var classroomFeature = dc.FeatureDescs.Where(x => x.FeatureDescID == id);
                     if (classroomFeature.Count() > 0)
                     {
-                        featureList.Add(new RoomFeatureIDataItemViewModel() { Feature = classroomFeature.First(), FeatureIsEnabled = true });
+                        featureList.Add(new RoomFeatureDataItemViewModel() { Feature = classroomFeature.First(), FeatureIsEnabled = true });
                     }
                 }
 
@@ -143,7 +204,7 @@ namespace TLTDatabaseEditor
                 {
                     if (!featureList.Select(x => x.Feature.Description).Contains(feature.Description))
                     {
-                        featureList.Add(new RoomFeatureIDataItemViewModel() { Feature = feature, FeatureIsEnabled = false });
+                        featureList.Add(new RoomFeatureDataItemViewModel() { Feature = feature, FeatureIsEnabled = false });
                     }
                 }
 

@@ -15,9 +15,13 @@ namespace TLTDatabaseEditor
 
         private List<Building> _dbBuildings;
         private List<Classroom> _dbClassrooms;
-        private List<RoomFeatureIDataItemViewModel> _roomFeatures;
+        private List<RoomFeatureDataItemViewModel> _roomFeatures;
         private List<string> _roomDescriptionAdds;
         private List<string> _roomDescriptionRemoves;
+
+        private List<string> _controlTypeAdds;
+        private List<string> _controlTypeRemoves;
+
         private IDialogCoordinator _dialogCoordinator;
 
         private string _selectedBuilding;
@@ -26,12 +30,43 @@ namespace TLTDatabaseEditor
         private string _addBuildingName;
         private string _addBuildingCode;
         private string _addRoomName;
+        private List<string> _roomTypes;
+        private List<string> _roomControlTypes;
+        private List<ControlTypeViewModel> _gridControlTypes;
+        private List<RoomTypeViewModel> _gridTypeDescs;
+        private string _selectedAddRoomType;
+        private string _selectedAddControlType;
 
         private bool _addBuildingIsEnabled;
         private bool _addRoomIsEnabled;
 
         public DashboardViewModel(string tabName) : base(tabName)
         {
+        }
+
+        public DashboardViewModel(IDialogCoordinator instance) : base("Empty")
+        {
+            _dialogCoordinator = instance;
+
+            DBBuildings = _model.GetBuildingNames();
+
+            RoomDescriptionAdds = new List<string>();
+            RoomDescriptionRemoves = new List<string>();
+            ControlTypeAdds = new List<string>();
+            ControlTypeRemoves = new List<string>();
+
+            RoomControlTypes = _model.GetRoomControlTypes();
+            RoomTypes = _model.GetRoomTypes();
+        }
+
+        public void SetControlType(string item)
+        {
+            _selectedAddControlType = item;
+        }
+
+        public void SetRoomType(string item)
+        {
+            _selectedAddRoomType = item;
         }
 
         //I'd really like to find a better way of doing this checked unchecked thing it erks me
@@ -83,9 +118,35 @@ namespace TLTDatabaseEditor
 
                 if (result == MessageDialogResult.Affirmative)
                 {
-                    _model.AddClassroom(buildingId.Value, AddRoomName, AddRoomIsEnabled);
+                    _model.AddClassroom(buildingId.Value, AddRoomName, _selectedAddRoomType, _selectedAddControlType, 50, AddRoomIsEnabled);
                     ClearAddBuildingText();
                 }
+            }
+        }
+
+        public void ControlTypeChecked(string updatedType)
+        {
+            var type = GridControlTypes.Where(x => x.Type.Description == updatedType);
+            if (type.First().RoomHasType)
+            {
+                ControlTypeRemoves.Remove(updatedType);
+            }
+            else
+            {
+                ControlTypeAdds.Add(updatedType);
+            }
+        }
+
+        public void ControlTypeUnchecked(string updatedType)
+        {
+            var type = GridControlTypes.Where(x => x.Type.Description == updatedType);
+            if (type.First().RoomHasType)
+            {
+                ControlTypeRemoves.Add(updatedType);
+            }
+            else
+            {
+                ControlTypeAdds.Remove(updatedType);
             }
         }
 
@@ -129,14 +190,56 @@ namespace TLTDatabaseEditor
             }
         }
 
-        public DashboardViewModel(IDialogCoordinator instance) : base("Empty")
+        public List<ControlTypeViewModel> GridControlTypes
         {
-            _dialogCoordinator = instance;
+            get
+            {
+                return _gridControlTypes;
+            }
 
-            DBBuildings = _model.GetBuildingNames();
+            set
+            {
+                SetProperty(ref _gridControlTypes, value);
+            }
+        }
 
-            RoomDescriptionAdds = new List<string>();
-            RoomDescriptionRemoves = new List<string>();
+        public List<RoomTypeViewModel> GridTypeDescs
+        {
+            get
+            {
+                return _gridTypeDescs;
+            }
+
+            set
+            {
+                SetProperty(ref _gridTypeDescs, value);
+            }
+        }
+
+        public List<string> RoomControlTypes
+        {
+            get
+            {
+                return _roomControlTypes;
+            }
+
+            set
+            {
+                SetProperty(ref _roomControlTypes, value);
+            }
+        }
+
+        public List<string> RoomTypes
+        {
+            get
+            {
+                return _roomTypes;
+            }
+
+            set
+            {
+                SetProperty(ref _roomTypes, value);
+            }
         }
 
         public bool AddBuildingIsEnabled
@@ -204,6 +307,32 @@ namespace TLTDatabaseEditor
             }
         }
 
+        public List<string> ControlTypeAdds
+        {
+            get
+            {
+                return _controlTypeAdds;
+            }
+
+            set
+            {
+                SetProperty(ref _controlTypeAdds, value);
+            }
+        }
+
+        public List<string> ControlTypeRemoves
+        {
+            get
+            {
+                return _controlTypeRemoves;
+            }
+
+            set
+            {
+                SetProperty(ref _controlTypeRemoves, value);
+            }
+        }
+
         public List<string> RoomDescriptionAdds
         {
             get
@@ -230,7 +359,7 @@ namespace TLTDatabaseEditor
             }
         }
 
-        public List<RoomFeatureIDataItemViewModel> RoomFeatures
+        public List<RoomFeatureDataItemViewModel> RoomFeatures
         {
             get
             {
@@ -281,6 +410,8 @@ namespace TLTDatabaseEditor
         {
             _roomNumberSelected = item;
             RoomFeatures = _model.GetRoomFeatures(item);
+            GridControlTypes = _model.GetRoomControlTypes(_roomNumberSelected, _selectedBuilding);
+            GridTypeDescs = _model.GetRoomDescTypes(_roomNumberSelected, _selectedBuilding);
         }
     }
 }

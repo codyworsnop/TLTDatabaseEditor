@@ -33,15 +33,21 @@ namespace TLTDatabaseEditor
     partial void InsertBuilding(Building instance);
     partial void UpdateBuilding(Building instance);
     partial void DeleteBuilding(Building instance);
-    partial void InsertClassroom(Classroom instance);
-    partial void UpdateClassroom(Classroom instance);
-    partial void DeleteClassroom(Classroom instance);
     partial void InsertClassroomFeatureDesc(ClassroomFeatureDesc instance);
     partial void UpdateClassroomFeatureDesc(ClassroomFeatureDesc instance);
     partial void DeleteClassroomFeatureDesc(ClassroomFeatureDesc instance);
     partial void InsertFeatureDesc(FeatureDesc instance);
     partial void UpdateFeatureDesc(FeatureDesc instance);
     partial void DeleteFeatureDesc(FeatureDesc instance);
+    partial void InsertControlType(ControlType instance);
+    partial void UpdateControlType(ControlType instance);
+    partial void DeleteControlType(ControlType instance);
+    partial void InsertTypeDesc(TypeDesc instance);
+    partial void UpdateTypeDesc(TypeDesc instance);
+    partial void DeleteTypeDesc(TypeDesc instance);
+    partial void InsertClassroom(Classroom instance);
+    partial void UpdateClassroom(Classroom instance);
+    partial void DeleteClassroom(Classroom instance);
     #endregion
 		
 		public DatabaseConnectionManagerDataContext() : 
@@ -79,14 +85,6 @@ namespace TLTDatabaseEditor
 			get
 			{
 				return this.GetTable<Building>();
-			}
-		}
-		
-		public System.Data.Linq.Table<Classroom> Classrooms
-		{
-			get
-			{
-				return this.GetTable<Classroom>();
 			}
 		}
 		
@@ -135,6 +133,30 @@ namespace TLTDatabaseEditor
 			get
 			{
 				return this.GetTable<vBuildingRoomFeature>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ControlType> ControlTypes
+		{
+			get
+			{
+				return this.GetTable<ControlType>();
+			}
+		}
+		
+		public System.Data.Linq.Table<TypeDesc> TypeDescs
+		{
+			get
+			{
+				return this.GetTable<TypeDesc>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Classroom> Classrooms
+		{
+			get
+			{
+				return this.GetTable<Classroom>();
 			}
 		}
 	}
@@ -228,116 +250,6 @@ namespace TLTDatabaseEditor
 					this._BuildingCode = value;
 					this.SendPropertyChanged("BuildingCode");
 					this.OnBuildingCodeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Enabled", DbType="Bit")]
-		public System.Nullable<bool> Enabled
-		{
-			get
-			{
-				return this._Enabled;
-			}
-			set
-			{
-				if ((this._Enabled != value))
-				{
-					this.OnEnabledChanging(value);
-					this.SendPropertyChanging();
-					this._Enabled = value;
-					this.SendPropertyChanged("Enabled");
-					this.OnEnabledChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Classroom")]
-	public partial class Classroom : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private string _RoomNumber;
-		
-		private int _BuildingID;
-		
-		private System.Nullable<bool> _Enabled;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnRoomNumberChanging(string value);
-    partial void OnRoomNumberChanged();
-    partial void OnBuildingIDChanging(int value);
-    partial void OnBuildingIDChanged();
-    partial void OnEnabledChanging(System.Nullable<bool> value);
-    partial void OnEnabledChanged();
-    #endregion
-		
-		public Classroom()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RoomNumber", DbType="VarChar(255) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		public string RoomNumber
-		{
-			get
-			{
-				return this._RoomNumber;
-			}
-			set
-			{
-				if ((this._RoomNumber != value))
-				{
-					this.OnRoomNumberChanging(value);
-					this.SendPropertyChanging();
-					this._RoomNumber = value;
-					this.SendPropertyChanged("RoomNumber");
-					this.OnRoomNumberChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BuildingID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int BuildingID
-		{
-			get
-			{
-				return this._BuildingID;
-			}
-			set
-			{
-				if ((this._BuildingID != value))
-				{
-					this.OnBuildingIDChanging(value);
-					this.SendPropertyChanging();
-					this._BuildingID = value;
-					this.SendPropertyChanged("BuildingID");
-					this.OnBuildingIDChanged();
 				}
 			}
 		}
@@ -881,6 +793,360 @@ namespace TLTDatabaseEditor
 				{
 					this._Description = value;
 				}
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ControlType")]
+	public partial class ControlType : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ControlTypeID;
+		
+		private string _Description;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnControlTypeIDChanging(int value);
+    partial void OnControlTypeIDChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    #endregion
+		
+		public ControlType()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ControlTypeID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ControlTypeID
+		{
+			get
+			{
+				return this._ControlTypeID;
+			}
+			set
+			{
+				if ((this._ControlTypeID != value))
+				{
+					this.OnControlTypeIDChanging(value);
+					this.SendPropertyChanging();
+					this._ControlTypeID = value;
+					this.SendPropertyChanged("ControlTypeID");
+					this.OnControlTypeIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="VarChar(255)")]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TypeDesc")]
+	public partial class TypeDesc : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _TypeDescID;
+		
+		private string _Description;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnTypeDescIDChanging(int value);
+    partial void OnTypeDescIDChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    #endregion
+		
+		public TypeDesc()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypeDescID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int TypeDescID
+		{
+			get
+			{
+				return this._TypeDescID;
+			}
+			set
+			{
+				if ((this._TypeDescID != value))
+				{
+					this.OnTypeDescIDChanging(value);
+					this.SendPropertyChanging();
+					this._TypeDescID = value;
+					this.SendPropertyChanged("TypeDescID");
+					this.OnTypeDescIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="VarChar(255)")]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Classroom")]
+	public partial class Classroom : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _RoomNumber;
+		
+		private int _BuildingID;
+		
+		private System.Nullable<int> _TypeID;
+		
+		private int _SeatingCapacity;
+		
+		private System.Nullable<int> _ControlType;
+		
+		private System.Nullable<bool> _Enabled;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnRoomNumberChanging(string value);
+    partial void OnRoomNumberChanged();
+    partial void OnBuildingIDChanging(int value);
+    partial void OnBuildingIDChanged();
+    partial void OnTypeIDChanging(System.Nullable<int> value);
+    partial void OnTypeIDChanged();
+    partial void OnSeatingCapacityChanging(int value);
+    partial void OnSeatingCapacityChanged();
+    partial void OnControlTypeChanging(System.Nullable<int> value);
+    partial void OnControlTypeChanged();
+    partial void OnEnabledChanging(System.Nullable<bool> value);
+    partial void OnEnabledChanged();
+    #endregion
+		
+		public Classroom()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RoomNumber", DbType="VarChar(255) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string RoomNumber
+		{
+			get
+			{
+				return this._RoomNumber;
+			}
+			set
+			{
+				if ((this._RoomNumber != value))
+				{
+					this.OnRoomNumberChanging(value);
+					this.SendPropertyChanging();
+					this._RoomNumber = value;
+					this.SendPropertyChanged("RoomNumber");
+					this.OnRoomNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BuildingID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int BuildingID
+		{
+			get
+			{
+				return this._BuildingID;
+			}
+			set
+			{
+				if ((this._BuildingID != value))
+				{
+					this.OnBuildingIDChanging(value);
+					this.SendPropertyChanging();
+					this._BuildingID = value;
+					this.SendPropertyChanged("BuildingID");
+					this.OnBuildingIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypeID", DbType="Int")]
+		public System.Nullable<int> TypeID
+		{
+			get
+			{
+				return this._TypeID;
+			}
+			set
+			{
+				if ((this._TypeID != value))
+				{
+					this.OnTypeIDChanging(value);
+					this.SendPropertyChanging();
+					this._TypeID = value;
+					this.SendPropertyChanged("TypeID");
+					this.OnTypeIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SeatingCapacity", DbType="Int NOT NULL")]
+		public int SeatingCapacity
+		{
+			get
+			{
+				return this._SeatingCapacity;
+			}
+			set
+			{
+				if ((this._SeatingCapacity != value))
+				{
+					this.OnSeatingCapacityChanging(value);
+					this.SendPropertyChanging();
+					this._SeatingCapacity = value;
+					this.SendPropertyChanged("SeatingCapacity");
+					this.OnSeatingCapacityChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ControlType", DbType="Int")]
+		public System.Nullable<int> ControlType
+		{
+			get
+			{
+				return this._ControlType;
+			}
+			set
+			{
+				if ((this._ControlType != value))
+				{
+					this.OnControlTypeChanging(value);
+					this.SendPropertyChanging();
+					this._ControlType = value;
+					this.SendPropertyChanged("ControlType");
+					this.OnControlTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Enabled", DbType="Bit")]
+		public System.Nullable<bool> Enabled
+		{
+			get
+			{
+				return this._Enabled;
+			}
+			set
+			{
+				if ((this._Enabled != value))
+				{
+					this.OnEnabledChanging(value);
+					this.SendPropertyChanging();
+					this._Enabled = value;
+					this.SendPropertyChanged("Enabled");
+					this.OnEnabledChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
 	}

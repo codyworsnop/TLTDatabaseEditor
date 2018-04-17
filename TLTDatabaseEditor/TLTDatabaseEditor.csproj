@@ -76,6 +76,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DatabaseConnectionManager.dbml</DependentUpon>
     </Compile>
+    <Compile Include="ControlTypeViewModel.cs" />
+    <Compile Include="RoomTypeViewModel.cs" />
     <Compile Include="ExportDataModel.cs" />
     <Compile Include="ExportDataView.xaml.cs">
       <DependentUpon>ExportDataView.xaml</DependentUpon>
@@ -84,7 +86,7 @@
     <Compile Include="ItemViewModel.cs" />
     <Compile Include="ListViewItemViewModel.cs" />
     <Compile Include="RelayCommand.cs" />
-    <Compile Include="RoomFeatureIDataItemViewModel.cs" />
+    <Compile Include="RoomFeatureDataItemViewModel.cs" />
     <Compile Include="TabContentViewModel.cs" />
     <Compile Include="ViewModelBase.cs" />
     <Page Include="DashboardView.xaml">

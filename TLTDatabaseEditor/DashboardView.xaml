@@ -27,7 +27,7 @@
                 <ColumnDefinition Width="50*"/>
                 <ColumnDefinition Width="50*"/>
             </Grid.ColumnDefinitions>
-            
+
             <DataGrid x:Name="BuildingsDataGrid"
                       Grid.Column="0"
                       ItemsSource="{Binding DBBuildings}"
@@ -77,22 +77,42 @@
             </DataGrid>
 
             <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
-                <StackPanel>
-                    <Label Margin="10, 0, 0, 0">Room Number</Label>
-                    <TextBox Width="200" Height="10" Margin="10, 0, 0, 0" Text="{Binding AddRoomName, Mode=TwoWay}"></TextBox>
+                <StackPanel Margin="10, 0, 0, 0">
+                    <Label>Room Number</Label>
+                    <TextBox Width="100" Height="10" Text="{Binding AddRoomName, Mode=TwoWay}"></TextBox>
                 </StackPanel>
 
-                <StackPanel>
-                    <Label Margin="10, 0, 0, 0">Room Enabled</Label>
-                    <CheckBox Margin="10, 0, 0, 0" IsChecked="{Binding AddRoomIsEnabled, Mode=TwoWay}"></CheckBox>
+                <StackPanel Margin="10, 0, 0, 0">
+                    <Label>Control Type</Label>
+                    <ComboBox Width="100" ItemsSource="{Binding RoomControlTypes}" SelectionChanged="AddControlTypeHandler"></ComboBox>
+                </StackPanel>
+
+                <StackPanel Margin="10, 0, 0, 0">
+                    <Label>Room Type</Label>
+                    <ComboBox Width="100" ItemsSource="{Binding RoomTypes}" SelectionChanged="AddRoomTypeHandler"></ComboBox>
+                </StackPanel>
+
+                <StackPanel Margin="10, 0, 0, 0">
+                    <Label>Room Enabled</Label>
+                    <CheckBox IsChecked="{Binding AddRoomIsEnabled, Mode=TwoWay}"></CheckBox>
                 </StackPanel>
 
                 <Button Click="AddRoomHandler" Height="10" Margin="10, 0, 0, 0">Add Room</Button>
             </StackPanel>
         </Grid>
 
+
         <Grid Grid.Row="1" Grid.Column="0">
-            <DataGrid ItemsSource="{Binding RoomFeatures}"
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+
+            <DataGrid Grid.Column="0"
+                      ItemsSource="{Binding RoomFeatures}"
                       AutoGenerateColumns="False"
                       IsReadOnly="True"
                       Margin="10">
@@ -107,21 +127,77 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
+
+            <DataGrid Grid.Column="1"
+                      ItemsSource="{Binding GridControlTypes}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      Margin="10">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Control Type Description" Binding="{Binding Type.Description}"/>
+                    <DataGridTemplateColumn Header="Has Feature">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding RoomHasType, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" Checked="ControlTypeCheckedHandler" Unchecked="ControlTypeUncheckedHandler"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <DataGrid Grid.Column="2"
+                      ItemsSource="{Binding GridTypeDescs}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      Margin="10">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Type Description" Binding="{Binding Type.Description}"/>
+                    <DataGridTemplateColumn Header="Has Feature">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding RoomHasType, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
         </Grid>
-        
+
         <Grid Grid.Column="1" Grid.RowSpan="2">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="90*"/>
                     <RowDefinition Height="10*"/>
                 </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0">
-                    <Label>Added</Label>
-                    <ListView x:Name="AddListView" ItemsSource="{Binding RoomDescriptionAdds}"/>
+                <StackPanel>
+                    <Label Margin="20, 0, 0, 0" FontWeight="Bold">Room Description Changes</Label>
+                    <StackPanel Grid.Row="0">
+                        <Label>Added</Label>
+                        <ListView x:Name="AddListView" ItemsSource="{Binding RoomDescriptionAdds}"/>
 
-                    <Label>Removed</Label>
-                    <ListView x:Name="RemoveListView" ItemsSource="{Binding RoomDescriptionRemoves}"/>
+                        <Label>Removed</Label>
+                        <ListView x:Name="RemoveListView" ItemsSource="{Binding RoomDescriptionRemoves}"/>
+                    </StackPanel>
+
+                    <Label Margin="10, 40, 0, 0" FontWeight="Bold">Control Type Changes</Label>
+                    <StackPanel Grid.Row="0">
+                        <Label>Added</Label>
+                        <ListView x:Name="AddControlTypeListView" ItemsSource="{Binding ControlTypeAdds}"/>
+
+                        <Label>Removed</Label>
+                        <ListView x:Name="RemoveControlTypeListView" ItemsSource="{Binding ControlTypeRemoves}"/>
+                    </StackPanel>
+
+                    <Label Margin="10, 40, 0, 0" FontWeight="Bold">Room Type Changes</Label>
+                    <StackPanel Grid.Row="0">
+                        <Label>Added</Label>
+                        <ListView x:Name="AddRoomTypeListView" ItemsSource="{Binding RoomDescriptionAdds}"/>
+
+                        <Label>Removed</Label>
+                        <ListView x:Name="RemoveRoomTypeListView" ItemsSource="{Binding RoomDescriptionRemoves}"/>
+                    </StackPanel>
                 </StackPanel>
+
 
                 <Button Grid.Row="1" Click="CommitChangesHandler">Commit</Button>
             </Grid>
