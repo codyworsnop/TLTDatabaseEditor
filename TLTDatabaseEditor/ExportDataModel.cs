@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro.Controls.Dialogs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,16 +17,21 @@ namespace TLTDatabaseEditor
         {
         }
 
-        public void ExportExcelData()
+        public void ExportExcelData(ref ProgressDialogController controller)
         {
+            double buildingIndex = 0;
+
             var excelApp = new Excel.Application();
-            excelApp.Visible = true;
             excelApp.Workbooks.Add();
 
             var buildings = GetBuildings();
             
             foreach (var building in buildings)
             {
+                double progress = buildingIndex / buildings.Count;
+                controller.SetProgress(progress);
+                buildingIndex++;
+
                 Excel._Worksheet activeWorkSheet = (Excel.Worksheet)excelApp.ActiveSheet;
                 activeWorkSheet.Name = building;
 
@@ -62,6 +68,8 @@ namespace TLTDatabaseEditor
                     excelApp.Worksheets.Add();
                 }
             }
+
+            excelApp.Visible = true;
         }
 
         private List<string> GetBuildings()

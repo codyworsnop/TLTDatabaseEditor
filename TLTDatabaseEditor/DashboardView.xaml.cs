@@ -91,7 +91,7 @@ namespace TLTDatabaseEditor
 
         private void ControlTypeCheckedHandler(object sender, RoutedEventArgs e)
         {
-            var updatedFeature = ((ControlTypeViewModel)((CheckBox)sender).DataContext).Type.Description;
+            var updatedFeature = ((ControlTypeViewModel)((RadioButton)sender).DataContext).Type.Description;
             _viewModel.ControlTypeChecked(updatedFeature);
             RemoveControlTypeListView.Items.Refresh();
             AddControlTypeListView.Items.Refresh();
@@ -99,10 +99,26 @@ namespace TLTDatabaseEditor
 
         private void ControlTypeUncheckedHandler(object sender, RoutedEventArgs e)
         {
-            var updatedFeature = ((ControlTypeViewModel)((CheckBox)sender).DataContext).Type.Description;
+            var updatedFeature = ((ControlTypeViewModel)((RadioButton)sender).DataContext).Type.Description;
             _viewModel.ControlTypeUnchecked(updatedFeature);
             RemoveControlTypeListView.Items.Refresh();
             AddControlTypeListView.Items.Refresh();
+        }
+
+        private void TypeUncheckedHandler(object sender, RoutedEventArgs e)
+        {
+            var updatedFeature = ((RoomTypeViewModel)((RadioButton)sender).DataContext).Type.Description;
+            _viewModel.RoomTypeUnchecked(updatedFeature);
+            AddRoomTypeListView.Items.Refresh();
+            RemoveRoomTypeListView.Items.Refresh();
+        }
+
+        private void TypeCheckedHandler(object sender, RoutedEventArgs e)
+        {
+            var updatedFeature = ((RoomTypeViewModel)((RadioButton)sender).DataContext).Type.Description;
+            _viewModel.RoomTypeChecked(updatedFeature);
+            AddRoomTypeListView.Items.Refresh();
+            RemoveRoomTypeListView.Items.Refresh();
         }
     }
 }

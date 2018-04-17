@@ -138,7 +138,7 @@
                     <DataGridTemplateColumn Header="Has Feature">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <CheckBox IsChecked="{Binding RoomHasType, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" Checked="ControlTypeCheckedHandler" Unchecked="ControlTypeUncheckedHandler"/>
+                                <RadioButton GroupName="ControlTypeRadioButtons" IsChecked="{Binding RoomHasType, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" Checked="ControlTypeCheckedHandler" Unchecked="ControlTypeUncheckedHandler"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -155,7 +155,7 @@
                     <DataGridTemplateColumn Header="Has Feature">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <CheckBox IsChecked="{Binding RoomHasType, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" />
+                                <RadioButton GroupName="TypeeRadioButtons" IsChecked="{Binding RoomHasType, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" Checked="TypeCheckedHandler" Unchecked="TypeUncheckedHandler"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -191,10 +191,10 @@
                     <Label Margin="10, 40, 0, 0" FontWeight="Bold">Room Type Changes</Label>
                     <StackPanel Grid.Row="0">
                         <Label>Added</Label>
-                        <ListView x:Name="AddRoomTypeListView" ItemsSource="{Binding RoomDescriptionAdds}"/>
+                        <ListView x:Name="AddRoomTypeListView" ItemsSource="{Binding RoomTypeAdds}"/>
 
                         <Label>Removed</Label>
-                        <ListView x:Name="RemoveRoomTypeListView" ItemsSource="{Binding RoomDescriptionRemoves}"/>
+                        <ListView x:Name="RemoveRoomTypeListView" ItemsSource="{Binding RoomTypeRemoves}"/>
                     </StackPanel>
                 </StackPanel>
 

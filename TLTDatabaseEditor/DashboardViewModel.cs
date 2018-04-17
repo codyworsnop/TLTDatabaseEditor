@@ -21,6 +21,8 @@ namespace TLTDatabaseEditor
 
         private List<string> _controlTypeAdds;
         private List<string> _controlTypeRemoves;
+        private List<string> _roomTypeAdds;
+        private List<string> _roomTypeRemoves;
 
         private IDialogCoordinator _dialogCoordinator;
 
@@ -54,6 +56,8 @@ namespace TLTDatabaseEditor
             RoomDescriptionRemoves = new List<string>();
             ControlTypeAdds = new List<string>();
             ControlTypeRemoves = new List<string>();
+            RoomTypeAdds = new List<string>();
+            RoomTypeRemoves = new List<string>();
 
             RoomControlTypes = _model.GetRoomControlTypes();
             RoomTypes = _model.GetRoomTypes();
@@ -121,6 +125,32 @@ namespace TLTDatabaseEditor
                     _model.AddClassroom(buildingId.Value, AddRoomName, _selectedAddRoomType, _selectedAddControlType, 50, AddRoomIsEnabled);
                     ClearAddBuildingText();
                 }
+            }
+        }
+
+        public void RoomTypeChecked(string updatedType)
+        {
+            var type = GridTypeDescs.Where(x => x.Type.Description == updatedType);
+            if (type.First().RoomHasType)
+            {
+                RoomTypeRemoves.Remove(updatedType);
+            }
+            else
+            {
+                RoomTypeAdds.Add(updatedType);
+            }
+        }
+
+        public void RoomTypeUnchecked(string updatedType)
+        {
+            var type = GridTypeDescs.Where(x => x.Type.Description == updatedType);
+            if (type.First().RoomHasType)
+            {
+                RoomTypeRemoves.Add(updatedType);
+            }
+            else
+            {
+                RoomTypeAdds.Remove(updatedType);
             }
         }
 
@@ -304,6 +334,32 @@ namespace TLTDatabaseEditor
             set
             {
                 SetProperty(ref _addBuildingCode, value);
+            }
+        }
+
+        public List<string> RoomTypeAdds
+        {
+            get
+            {
+                return _roomTypeAdds;
+            }
+            
+            set
+            {
+                SetProperty(ref _roomTypeAdds, value);
+            }
+        }
+
+        public List<string> RoomTypeRemoves
+        {
+            get
+            {
+                return _roomTypeRemoves;
+            }
+
+            set
+            {
+                SetProperty(ref _roomTypeRemoves, value);
             }
         }
 

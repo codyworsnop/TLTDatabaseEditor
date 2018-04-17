@@ -4,9 +4,30 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TLTDatabaseEditor"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+             mc:Ignorable="d"
+             Dialog:DialogParticipation.Register="{Binding}">
     <Grid>
-        <Button Click="ExportAllHandler">Export All Data</Button>  
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <DataGrid x:Name="BuildingsDataGrid"
+                      Grid.Column="0"
+                      ItemsSource="{Binding DBBuildings}"
+                      AutoGenerateColumns="False"
+                      SelectionChanged="BuildingSelectionChangedHandler"
+                      SelectionMode="Single"
+                      SelectedIndex="0"
+                      IsReadOnly="True"
+                      Margin="10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Building Name" Binding="{Binding BuildingName}"/>
+                <DataGridTextColumn Header="Building Code" Binding="{Binding BuildingCode}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        <Button Height="100" Click="ExportAllHandler">Export All Data</Button>  
     </Grid>
 </UserControl>

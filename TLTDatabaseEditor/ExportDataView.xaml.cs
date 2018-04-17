@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro.Controls.Dialogs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,17 +21,22 @@ namespace TLTDatabaseEditor
     /// </summary>
     public partial class ExportDataView : UserControl
     {
-        ExportDataViewModel _viewModel = new ExportDataViewModel(); 
+        ExportDataViewModel _viewModel = new ExportDataViewModel(DialogCoordinator.Instance); 
 
         public ExportDataView()
         {
             InitializeComponent();
             DataContext = _viewModel;
-        }
+        }   
 
         private void ExportAllHandler(object sender, RoutedEventArgs e)
         {
             _viewModel.ExportToExcel();
+        }
+
+        private void BuildingSelectionChangedHandler(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }
