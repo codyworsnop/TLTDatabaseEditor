@@ -1,220 +1,486 @@
-﻿using System;
+﻿// Decompiled with JetBrains decompiler
+// Type: TLTDatabaseEditor.DashboardModel
+// Assembly: TLTDatabaseEditor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+// MVID: D3AA8152-A60D-4A42-87BE-242C5FFCE9A0
+// Assembly location: C:\Program Files (x86)\GizmoTron v1.5\TLTDatabaseEditor.exe
+
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Linq;
+using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
+using TLTDatabaseEditor.Properties;
 
 namespace TLTDatabaseEditor
 {
     public class DashboardModel
     {
-        public DatabaseConnectionManagerDataContext dc = new DatabaseConnectionManagerDataContext(Properties.Settings.Default.TLT_InventoryConnectionString);
-
+        public DatabaseConnectionManagerDataContext dc = new DatabaseConnectionManagerDataContext(Settings.Default.TLT_InventoryConnectionString);
         private IQueryable<int> _buildingId;
 
-        public DashboardModel()
-        {
+        public event DashboardModel.SqlExceptionDelegate sqlExceptionThrown;
 
+        public List<GridListItemViewModel<ControlType>> GetRoomControlTypes(
+          string roomNumber,
+          string buildingName)
+        {
+            try
+            {
+                if (this.dc.DatabaseExists())
+                {
+                    List<GridListItemViewModel<ControlType>> roomControlTypes = new List<GridListItemViewModel<ControlType>>();
+                    Table<ControlType> controlTypes = this.dc.ControlTypes;
+                    IQueryable<int> _buildingId = this.dc.Buildings.Where<Building>((Expression<Func<Building, bool>>)(x => x.BuildingName == buildingName)).Select<Building, int>((Expression<Func<Building, int>>)(x => x.BuildingID));
+                    foreach (ControlType controlType in controlTypes)
+                    {
+                        int? nullable = this.dc.Classrooms.Where<Classroom>((Expression<Func<Classroom, bool>>)(x => x.BuildingID == _buildingId.First<int>() && x.RoomNumber == roomNumber)).Select<Classroom, int?>((Expression<Func<Classroom, int?>>)(x => x.ControlType)).First<int?>();
+                        int controlTypeId = controlType.ControlTypeID;
+                        bool flag = (nullable.GetValueOrDefault() == controlTypeId ? (nullable.HasValue ? 1 : 0) : 0) != 0;
+                        roomControlTypes.Add(new GridListItemViewModel<ControlType>()
+                        {
+                            Data = controlType,
+                            IsEnabled = flag
+                        });
+                    }
+                    return roomControlTypes;
+                }
+            }
+            catch (SqlException ex)
+            {
+                this.sqlExceptionThrown(ex.Message);
+                throw new Exception();
+            }
+            return (List<GridListItemViewModel<ControlType>>)null;
         }
 
-        public List<ControlTypeViewModel> GetRoomControlTypes(string roomNumber, string buildingName)
+        public int? GetTypeIdToUpdate(List<GridListItemViewModel<TypeDesc>> types, string selectedType)
         {
-            if (dc.DatabaseExists())
+            try
             {
-                var typeList = new List<ControlTypeViewModel>();
-                var types = dc.ControlTypes;
-                var _buildingId = dc.Buildings.Where(x => x.BuildingName == buildingName && x.Enabled == true).Select(x => x.BuildingID);
-
-                foreach (var type in types)
-                {
-                    var roomHasType = dc.Classrooms.Where(x => x.BuildingID == _buildingId.First() && x.RoomNumber == roomNumber).Select(x => x.ControlType).First() == type.ControlTypeID ? true : false;               
-                    typeList.Add(new ControlTypeViewModel() { Type = type, RoomHasType = roomHasType });
-                }
-
-                return typeList;
+                if (this.dc.DatabaseExists())
+                    return new int?(this.dc.TypeDescs.Where<TypeDesc>((Expression<Func<TypeDesc, bool>>)(x => x.Description == selectedType)).First<TypeDesc>().TypeDescID);
             }
-
-            return null;
+            catch (SqlException ex)
+            {
+                this.sqlExceptionThrown(ex.Message);
+                throw new Exception();
+            }
+            return new int?();
         }
 
-        public List<RoomTypeViewModel> GetRoomDescTypes(string roomNumber, string buildingName)
+        public int? GetControlTypeToUpdate(
+          List<GridListItemViewModel<ControlType>> types,
+          string selectedType)
         {
-            if (dc.DatabaseExists())
+            try
             {
-                var typeList = new List<RoomTypeViewModel>();
-                var types = dc.TypeDescs;
-                var _buildingId = dc.Buildings.Where(x => x.BuildingName == buildingName && x.Enabled == true).Select(x => x.BuildingID);
-
-                foreach (var type in types)
-                {
-                    var roomHasType = dc.Classrooms.Where(x => x.BuildingID == _buildingId.First() && x.RoomNumber == roomNumber).Select(x => x.TypeID).First() == type.TypeDescID ? true : false;
-                    typeList.Add(new RoomTypeViewModel() { Type = type, RoomHasType = roomHasType });
-                }
-
-                return typeList;
+                if (this.dc.DatabaseExists())
+                    return new int?(this.dc.ControlTypes.Where<ControlType>((Expression<Func<ControlType, bool>>)(x => x.Description == selectedType)).First<ControlType>().ControlTypeID);
             }
+            catch (SqlException ex)
+            {
+                this.sqlExceptionThrown(ex.Message);
+                throw new Exception();
+            }
+            return new int?();
+        }
 
-            return null;
+        public List<GridListItemViewModel<TypeDesc>> GetRoomDescTypes(
+          string roomNumber,
+          string buildingName)
+        {
+            try
+            {
+                if (this.dc.DatabaseExists())
+                {
+                    List<GridListItemViewModel<TypeDesc>> roomDescTypes = new List<GridListItemViewModel<TypeDesc>>();
+                    Table<TypeDesc> typeDescs = this.dc.TypeDescs;
+                    IQueryable<int> _buildingId = this.dc.Buildings.Where<Building>((Expression<Func<Building, bool>>)(x => x.BuildingName == buildingName)).Select<Building, int>((Expression<Func<Building, int>>)(x => x.BuildingID));
+                    foreach (TypeDesc typeDesc in typeDescs)
+                    {
+                        int? nullable = this.dc.Classrooms.Where<Classroom>((Expression<Func<Classroom, bool>>)(x => x.BuildingID == _buildingId.First<int>() && x.RoomNumber == roomNumber)).Select<Classroom, int?>((Expression<Func<Classroom, int?>>)(x => x.TypeID)).First<int?>();
+                        int typeDescId = typeDesc.TypeDescID;
+                        bool flag = (nullable.GetValueOrDefault() == typeDescId ? (nullable.HasValue ? 1 : 0) : 0) != 0;
+                        roomDescTypes.Add(new GridListItemViewModel<TypeDesc>()
+                        {
+                            Data = typeDesc,
+                            IsEnabled = flag
+                        });
+                    }
+                    return roomDescTypes;
+                }
+            }
+            catch (SqlException ex)
+            {
+                this.sqlExceptionThrown(ex.Message);
+                throw new Exception();
+            }
+            return (List<GridListItemViewModel<TypeDesc>>)null;
+        }
+
+        public void UpdateControlType(int controlTypeID, string buildingName, string roomNumber)
+        {
+            try
+            {
+                if (!this.dc.DatabaseExists())
+                    return;
+                IQueryable<int> source = this.dc.Buildings.Where<Building>((Expression<Func<Building, bool>>)(x => x.BuildingName == buildingName)).Select<Building, int>((Expression<Func<Building, int>>)(x => x.BuildingID));
+                this.dc.ExecuteQuery<ClassroomQuery>("UPDATE Classroom SET ControlType = " + (object)controlTypeID + "WHERE BuildingID = " + (object)source.First<int>() + " AND RoomNumber = '" + roomNumber + "'");
+            }
+            catch (SqlException ex)
+            {
+                this.sqlExceptionThrown(ex.Message);
+                throw new Exception();
+            }
+        }
+
+        public void SetRoomEnables(List<string> RoomEnables, string selectedBuilding)
+        {
+            try
+            {
+                if (!this.dc.DatabaseExists())
+                    return;
+                IQueryable<int> source = this.dc.Buildings.Where<Building>((Expression<Func<Building, bool>>)(x => x.BuildingName == selectedBuilding)).Select<Building, int>((Expression<Func<Building, int>>)(x => x.BuildingID));
+                foreach (string roomEnable in RoomEnables)
+                    this.dc.ExecuteQuery<ClassroomQuery>("UPDATE Classroom SET Enabled = 1 WHERE RoomNumber = '" + roomEnable + "' AND BuildingID = " + (object)source.First<int>());
+                this.RefreshClassroomEntity();
+            }
+            catch (SqlException ex)
+            {
+                this.sqlExceptionThrown(ex.Message);
+                throw new Exception();
+            }
+        }
+
+        public void SetRoomDisables(List<string> RoomDisables, string selectedBuilding)
+        {
+            try
+            {
+                if (!this.dc.DatabaseExists())
+                    return;
+                IQueryable<int> source = this.dc.Buildings.Where<Building>((Expression<Func<Building, bool>>)(x => x.BuildingName == selectedBuilding)).Select<Building, int>((Expression<Func<Building, int>>)(x => x.BuildingID));
+                foreach (string roomDisable in RoomDisables)
+                    this.dc.ExecuteQuery<ClassroomQuery>("UPDATE Classroom SET Enabled = 0 WHERE RoomNumber = '" + roomDisable + "' AND BuildingID = " + (object)source.First<int>());
+                this.RefreshClassroomEntity();
+            }
+            catch (SqlException ex)
+            {
+                this.sqlExceptionThrown(ex.Message);
+                throw new Exception();
+            }
+        }
+
+        public void SetBuildingEnables(List<string> BuildingEnables)
+        {
+            try
+            {
+                if (!this.dc.DatabaseExists())
+                    return;
+                foreach (string buildingEnable in BuildingEnables)
+                {
+                    string building = buildingEnable;
+                    this.dc.ExecuteQuery<BuildingQuery>("UPDATE Building SET Enabled = 1 WHERE BuildingID = " + (object)this.dc.Buildings.Where<Building>((Expression<Func<Building, bool>>)(x => x.BuildingName == building)).Select<Building, int>((Expression<Func<Building, int>>)(x => x.BuildingID)).First<int>());
+                }
+                this.RefreshBuildingEntity();
+            }
+            catch (SqlException ex)
+            {
+                this.sqlExceptionThrown(ex.Message);
+                throw new Exception();
+            }
+        }
+
+        public void SetBuildingDisables(List<string> BuildingDisables)
+        {
+            try
+            {
+                if (!this.dc.DatabaseExists())
+                    return;
+                foreach (string buildingDisable in BuildingDisables)
+                {
+                    string building = buildingDisable;
+                    this.dc.ExecuteQuery<BuildingQuery>("UPDATE Building SET Enabled = 0 WHERE BuildingID = " + (object)this.dc.Buildings.Where<Building>((Expression<Func<Building, bool>>)(x => x.BuildingName == building)).Select<Building, int>((Expression<Func<Building, int>>)(x => x.BuildingID)).First<int>());
+                }
+                this.RefreshBuildingEntity();
+            }
+            catch (SqlException ex)
+            {
+                this.sqlExceptionThrown(ex.Message);
+                throw new Exception();
+            }
+        }
+
+        public void UpdateType(int typeId, string buildingName, string roomNumber)
+        {
+            try
+            {
+                if (!this.dc.DatabaseExists())
+                    return;
+                IQueryable<int> source = this.dc.Buildings.Where<Building>((Expression<Func<Building, bool>>)(x => x.BuildingName == buildingName)).Select<Building, int>((Expression<Func<Building, int>>)(x => x.BuildingID));
+                this.dc.ExecuteQuery<ClassroomQuery>("UPDATE Classroom SET TypeID = " + (object)typeId + "WHERE BuildingID = " + (object)source.First<int>() + " AND RoomNumber = '" + roomNumber + "'");
+            }
+            catch (SqlException ex)
+            {
+                this.sqlExceptionThrown(ex.Message);
+                throw new Exception();
+            }
         }
 
         public List<string> GetRoomControlTypes()
         {
-            if (dc.DatabaseExists())
+            try
             {
-                return dc.ControlTypes.Select(x => x.Description).ToList();
+                if (this.dc.DatabaseExists())
+                    return this.dc.ControlTypes.Select<ControlType, string>((Expression<Func<ControlType, string>>)(x => x.Description)).ToList<string>();
             }
-          
-            return null;
+            catch (SqlException ex)
+            {
+                this.sqlExceptionThrown(ex.Message);
+                throw new Exception();
+            }
+            return (List<string>)null;
         }
 
         public List<string> GetRoomTypes()
         {
-            if (dc.DatabaseExists())
+            try
             {
-                return dc.ExecuteQuery<TypeDesc>(@"SELECT * FROM TypeDesc").Select(x => x.Description).ToList();
+                if (this.dc.DatabaseExists())
+                    return this.dc.ExecuteQuery<TypeDesc>("SELECT * FROM TypeDesc").Select<TypeDesc, string>((Func<TypeDesc, string>)(x => x.Description)).ToList<string>();
             }
-
-            return null;
+            catch (SqlException ex)
+            {
+                this.sqlExceptionThrown(ex.Message);
+                throw new Exception();
+            }
+            return (List<string>)null;
         }
 
         public void AddBuilding(string BuildingName, string BuildingCode, bool IsEnabled)
         {
-            if (dc.DatabaseExists())
+            try
             {
-                var result = dc.ExecuteQuery<BuildingQuery>(@"INSERT INTO Building VALUES ({0}, {1}, {2})", BuildingName, BuildingCode, IsEnabled);
+                if (!this.dc.DatabaseExists())
+                    return;
+                this.dc.ExecuteQuery<BuildingQuery>("INSERT INTO Building VALUES ({0}, {1}, {2})", (object)BuildingName, (object)BuildingCode, (object)IsEnabled);
+            }
+            catch (SqlException ex)
+            {
+                this.sqlExceptionThrown(ex.Message);
+                throw new Exception();
             }
         }
 
-        public void AddClassroom(int BuildingID, string RoomNumber, string TypeDesc, string ControlType, int Capacity, bool IsEnabled)
+        public void AddClassroom(
+          int BuildingID,
+          string RoomNumber,
+          string TypeDesc,
+          string ControlType,
+          int Capacity,
+          bool IsEnabled)
         {
-            if (dc.DatabaseExists())
+            try
             {
-                var controlTypeID = dc.ControlTypes.Where(x => x.Description == ControlType).Select(x => x.ControlTypeID).First();
-                var TypeDescID = dc.TypeDescs.Where(x => x.Description == TypeDesc).Select(x => x.TypeDescID).First();
-                var result = dc.ExecuteQuery<ClassroomQuery>(@"INSERT INTO Classroom VALUES ({0}, {1}, {2}, {3}, {4}, {5})", RoomNumber, BuildingID, TypeDescID, Capacity, controlTypeID, IsEnabled);
+                if (!this.dc.DatabaseExists())
+                    return;
+                int num1 = this.dc.ControlTypes.Where<ControlType>((Expression<Func<ControlType, bool>>)(x => x.Description == ControlType)).Select<ControlType, int>((Expression<Func<ControlType, int>>)(x => x.ControlTypeID)).First<int>();
+                int num2 = this.dc.TypeDescs.Where<TypeDesc>((Expression<Func<TypeDesc, bool>>)(x => x.Description == TypeDesc)).Select<TypeDesc, int>((Expression<Func<TypeDesc, int>>)(x => x.TypeDescID)).First<int>();
+                this.dc.ExecuteQuery<ClassroomQuery>("INSERT INTO Classroom VALUES ({0}, {1}, {2}, {3}, {4}, {5})", (object)RoomNumber, (object)BuildingID, (object)num2, (object)Capacity, (object)num1, (object)IsEnabled);
+            }
+            catch (SqlException ex)
+            {
+                this.sqlExceptionThrown(ex.Message);
+                throw new Exception();
             }
         }
 
         public void RemoveDescriptions(List<int> FeatureDescIDs, string RoomNumber, int BuildingID)
         {
-            if (dc.DatabaseExists())
+            try
             {
-                foreach (var id in FeatureDescIDs)
-                {
-                    var result = dc.ExecuteQuery<ClassroomFeatureDescQuery>(@"DELETE FROM ClassroomFeatureDesc WHERE FeatureDescID = {0} AND RoomNumber = {1} AND BuildingID = {2}", id, RoomNumber, BuildingID);
-                }
+                if (!this.dc.DatabaseExists())
+                    return;
+                foreach (int featureDescId in FeatureDescIDs)
+                    this.dc.ExecuteQuery<ClassroomFeatureDescQuery>("DELETE FROM ClassroomFeatureDesc WHERE FeatureDescID = {0} AND RoomNumber = {1} AND BuildingID = {2}", (object)featureDescId, (object)RoomNumber, (object)BuildingID);
             }
-
-
+            catch (SqlException ex)
+            {
+                this.sqlExceptionThrown(ex.Message);
+                throw new Exception();
+            }
         }
 
         public void AddDescriptions(List<int> FeatureDescIDs, string RoomNumber, int BuildingID)
         {
-            if (dc.DatabaseExists())
+            try
             {
-                foreach (var id in FeatureDescIDs)
-                {
-                    var result = dc.ExecuteQuery<ClassroomFeatureDescQuery>(@"INSERT INTO ClassroomFeatureDesc VALUES ({0}, {1}, {2})", id, RoomNumber, BuildingID);
-                }
+                if (!this.dc.DatabaseExists())
+                    return;
+                foreach (int featureDescId in FeatureDescIDs)
+                    this.dc.ExecuteQuery<ClassroomFeatureDescQuery>("INSERT INTO ClassroomFeatureDesc VALUES ({0}, {1}, {2})", (object)featureDescId, (object)RoomNumber, (object)BuildingID);
             }
-
-
+            catch (SqlException ex)
+            {
+                this.sqlExceptionThrown(ex.Message);
+                throw new Exception();
+            }
         }
 
         public List<int> GetFeatureDescs(List<string> features)
         {
-            if (dc.DatabaseExists())
+            try
             {
-                var descriptions = new List<int>();
-
-                foreach (var feature in features)
+                if (this.dc.DatabaseExists())
                 {
-                    descriptions.Add(dc.FeatureDescs.Where(x => x.Description == feature).Select(x => x.FeatureDescID).First());
+                    List<int> featureDescs = new List<int>();
+                    foreach (string feature1 in features)
+                    {
+                        string feature = feature1;
+                        featureDescs.Add(this.dc.FeatureDescs.Where<FeatureDesc>((Expression<Func<FeatureDesc, bool>>)(x => x.Description == feature)).Select<FeatureDesc, int>((Expression<Func<FeatureDesc, int>>)(x => x.FeatureDescID)).First<int>());
+                    }
+                    return featureDescs;
                 }
-
-                return descriptions;
             }
-
-            return null;
+            catch (SqlException ex)
+            {
+                this.sqlExceptionThrown(ex.Message);
+                throw new Exception();
+            }
+            return (List<int>)null;
         }
 
         public List<Building> GetBuildingNames()
         {
-            if (dc.DatabaseExists())
+            try
             {
-                return dc.Buildings.Where(x => x.Enabled == true).ToList();
+                if (this.dc.DatabaseExists())
+                    return this.dc.Buildings.OrderBy<Building, string>((Expression<Func<Building, string>>)(x => x.BuildingName)).ToList<Building>();
             }
-
-            return null;
+            catch (SqlException ex)
+            {
+                this.sqlExceptionThrown(ex.Message);
+                throw new Exception();
+            }
+            return (List<Building>)null;
         }
 
         public List<Classroom> GetClassroomNames(string buildingName)
         {
-            if (dc.DatabaseExists())
+            try
             {
-                _buildingId = dc.Buildings.Where(x => x.BuildingName == buildingName && x.Enabled == true).Select(x => x.BuildingID);
-                return dc.Classrooms.Where(x => x.BuildingID == _buildingId.First() && x.Enabled == true).ToList();
+                if (this.dc.DatabaseExists())
+                {
+                    this._buildingId = this.dc.Buildings.Where<Building>((Expression<Func<Building, bool>>)(x => x.BuildingName == buildingName)).Select<Building, int>((Expression<Func<Building, int>>)(x => x.BuildingID));
+                    return this.dc.Classrooms.Where<Classroom>((Expression<Func<Classroom, bool>>)(x => x.BuildingID == this._buildingId.First<int>())).Select<Classroom, Classroom>((Expression<Func<Classroom, Classroom>>)(x => x)).ToList<Classroom>();
+                }
             }
-
-            return null;
+            catch (SqlException ex)
+            {
+                this.sqlExceptionThrown(ex.Message);
+                throw new Exception();
+            }
+            return (List<Classroom>)null;
         }
 
         public int? GetBuildingCodeForBuildingName(string buildingName)
         {
-            if (dc.DatabaseExists())
+            try
             {
-                var buildingList = _buildingId = dc.Buildings.Where(x => x.BuildingName == buildingName && x.Enabled == true).Select(x => x.BuildingID);
-                return buildingList.First();
+                if (this.dc.DatabaseExists())
+                    return new int?((this._buildingId = this.dc.Buildings.Where<Building>((Expression<Func<Building, bool>>)(x => x.BuildingName == buildingName)).Select<Building, int>((Expression<Func<Building, int>>)(x => x.BuildingID))).First<int>());
             }
-
-            return null;
+            catch (SqlException ex)
+            {
+                this.sqlExceptionThrown(ex.Message);
+                throw new Exception();
+            }
+            return new int?();
         }
 
         private List<FeatureDesc> GetAllRoomFeatures()
         {
-            if (dc.DatabaseExists())
+            try
             {
-                return dc.FeatureDescs.ToList();
+                if (this.dc.DatabaseExists())
+                    return this.dc.FeatureDescs.ToList<FeatureDesc>();
             }
-
-            return null;
+            catch (SqlException ex)
+            {
+                this.sqlExceptionThrown(ex.Message);
+                throw new Exception();
+            }
+            return (List<FeatureDesc>)null;
         }
 
-        public List<RoomFeatureDataItemViewModel> GetRoomFeatures(string classroomNumber)
+        private void RefreshClassroomEntity()
         {
-            if (dc.DatabaseExists())
+            try
             {
-                var featureList = new List<RoomFeatureDataItemViewModel>();
-
-                var featureId = dc.ClassroomFeatureDescs.Where(x => x.RoomNumber == classroomNumber && x.BuildingID == _buildingId.First()).Select(x => x.FeatureDescID);
-
-                foreach (var id in featureId)
-                {
-                    var classroomFeature = dc.FeatureDescs.Where(x => x.FeatureDescID == id);
-                    if (classroomFeature.Count() > 0)
-                    {
-                        featureList.Add(new RoomFeatureDataItemViewModel() { Feature = classroomFeature.First(), FeatureIsEnabled = true });
-                    }
-                }
-
-                var allRoomFeatures = GetAllRoomFeatures();
-
-                foreach (var feature in allRoomFeatures)
-                {
-                    if (!featureList.Select(x => x.Feature.Description).Contains(feature.Description))
-                    {
-                        featureList.Add(new RoomFeatureDataItemViewModel() { Feature = feature, FeatureIsEnabled = false });
-                    }
-                }
-
-                return featureList;
+                this.dc.Refresh(RefreshMode.OverwriteCurrentValues, (IEnumerable)this.dc.Classrooms);
             }
-
-            return null;
+            catch (SqlException ex)
+            {
+                this.sqlExceptionThrown(ex.Message);
+                throw new Exception();
+            }
         }
+
+        private void RefreshBuildingEntity()
+        {
+            try
+            {
+                this.dc.Refresh(RefreshMode.OverwriteCurrentValues, (IEnumerable)this.dc.Buildings);
+            }
+            catch (SqlException ex)
+            {
+                this.sqlExceptionThrown(ex.Message);
+                throw new Exception();
+            }
+        }
+
+        public List<GridListItemViewModel<FeatureDesc>> GetRoomFeatures(
+          string classroomNumber)
+        {
+            try
+            {
+                if (this.dc.DatabaseExists())
+                {
+                    List<GridListItemViewModel<FeatureDesc>> source1 = new List<GridListItemViewModel<FeatureDesc>>();
+                    IQueryable<ClassroomFeatureDesc> source2 = this.dc.ClassroomFeatureDescs.Where<ClassroomFeatureDesc>((Expression<Func<ClassroomFeatureDesc, bool>>)(x => x.RoomNumber == classroomNumber && x.BuildingID == this._buildingId.First<int>()));
+                    Expression<Func<ClassroomFeatureDesc, int>> selector = (Expression<Func<ClassroomFeatureDesc, int>>)(x => x.FeatureDescID);
+                    foreach (int num in (IEnumerable<int>)source2.Select<ClassroomFeatureDesc, int>(selector))
+                    {
+                        int id = num;
+                        IQueryable<FeatureDesc> source3 = this.dc.FeatureDescs.Where<FeatureDesc>((Expression<Func<FeatureDesc, bool>>)(x => x.FeatureDescID == id));
+                        if (source3.Count<FeatureDesc>() > 0)
+                            source1.Add(new GridListItemViewModel<FeatureDesc>()
+                            {
+                                Data = source3.First<FeatureDesc>(),
+                                IsEnabled = true
+                            });
+                    }
+                    foreach (FeatureDesc allRoomFeature in this.GetAllRoomFeatures())
+                    {
+                        if (!source1.Select<GridListItemViewModel<FeatureDesc>, string>((Func<GridListItemViewModel<FeatureDesc>, string>)(x => x.Data.Description)).Contains<string>(allRoomFeature.Description))
+                            source1.Add(new GridListItemViewModel<FeatureDesc>()
+                            {
+                                Data = allRoomFeature,
+                                IsEnabled = false
+                            });
+                    }
+                    return source1;
+                }
+            }
+            catch (SqlException ex)
+            {
+                this.sqlExceptionThrown(ex.Message);
+                throw new Exception();
+            }
+            return (List<GridListItemViewModel<FeatureDesc>>)null;
+        }
+
+        public delegate void SqlExceptionDelegate(string message);
     }
 }
-
-
-

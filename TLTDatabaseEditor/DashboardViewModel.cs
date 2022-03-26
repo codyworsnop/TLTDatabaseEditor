@@ -1,473 +1,572 @@
-﻿
+﻿// Decompiled with JetBrains decompiler
+// Type: TLTDatabaseEditor.DashboardViewModel
+// Assembly: TLTDatabaseEditor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+// MVID: D3AA8152-A60D-4A42-87BE-242C5FFCE9A0
+// Assembly location: C:\Program Files (x86)\GizmoTron v1.5\TLTDatabaseEditor.exe
+
 using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace TLTDatabaseEditor
 {
     public class DashboardViewModel : ItemViewModel
     {
-        DashboardModel _model = new DashboardModel();
-
+        private DashboardModel _model = new DashboardModel();
+        private bool _addRoomGreyed;
+        private bool _addBuildingGreyed;
         private List<Building> _dbBuildings;
         private List<Classroom> _dbClassrooms;
-        private List<RoomFeatureDataItemViewModel> _roomFeatures;
+        private List<GridListItemViewModel<FeatureDesc>> _roomFeatures;
         private List<string> _roomDescriptionAdds;
         private List<string> _roomDescriptionRemoves;
-
         private List<string> _controlTypeAdds;
         private List<string> _controlTypeRemoves;
         private List<string> _roomTypeAdds;
         private List<string> _roomTypeRemoves;
-
+        private List<string> _roomEnables;
+        private List<string> _roomDisables;
+        private List<string> _buildingEnables;
+        private List<string> _buildingDisables;
+        private List<string> _roomTypes;
+        private List<string> _roomControlTypes;
+        private List<GridListItemViewModel<ControlType>> _gridControlTypes;
+        private List<GridListItemViewModel<TypeDesc>> _gridTypeDescs;
         private IDialogCoordinator _dialogCoordinator;
-
         private string _selectedBuilding;
         private string _roomNumberSelected;
-
         private string _addBuildingName;
         private string _addBuildingCode;
         private string _addRoomName;
-        private List<string> _roomTypes;
-        private List<string> _roomControlTypes;
-        private List<ControlTypeViewModel> _gridControlTypes;
-        private List<RoomTypeViewModel> _gridTypeDescs;
         private string _selectedAddRoomType;
         private string _selectedAddControlType;
-
         private bool _addBuildingIsEnabled;
         private bool _addRoomIsEnabled;
 
-        public DashboardViewModel(string tabName) : base(tabName)
+        public event DashboardViewModel.BuildingListUpdateDelegate UpdateBuildingList;
+
+        public event DashboardViewModel.RoomListUpdateDelegate UpdateRoomList;
+
+        public event DashboardViewModel.UpdateDashboardStatus UpdateDashboardLists;
+
+        public DashboardViewModel(string tabName)
+          : base(tabName)
         {
         }
 
-        public DashboardViewModel(IDialogCoordinator instance) : base("Empty")
+        public DashboardViewModel(IDialogCoordinator instance)
+          : base("Empty")
         {
-            _dialogCoordinator = instance;
-
-            DBBuildings = _model.GetBuildingNames();
-
-            RoomDescriptionAdds = new List<string>();
-            RoomDescriptionRemoves = new List<string>();
-            ControlTypeAdds = new List<string>();
-            ControlTypeRemoves = new List<string>();
-            RoomTypeAdds = new List<string>();
-            RoomTypeRemoves = new List<string>();
-
-            RoomControlTypes = _model.GetRoomControlTypes();
-            RoomTypes = _model.GetRoomTypes();
+            this._dialogCoordinator = instance;
+            try
+            {
+                this.DBBuildings = this._model.GetBuildingNames();
+            }
+            finally
+            {
+                this.RoomDescriptionAdds = new List<string>();
+                this.RoomDescriptionRemoves = new List<string>();
+                this.ControlTypeAdds = new List<string>();
+                this.ControlTypeRemoves = new List<string>();
+                this.RoomTypeAdds = new List<string>();
+                this.RoomTypeRemoves = new List<string>();
+                this.BuildingEnables = new List<string>();
+                this.BuildingDisables = new List<string>();
+                this.RoomEnables = new List<string>();
+                this.RoomDisables = new List<string>();
+                try
+                {
+                    this.RoomControlTypes = this._model.GetRoomControlTypes();
+                    this.RoomTypes = this._model.GetRoomTypes();
+                }
+                finally
+                {
+                    this.AddRoomGreyed = false;
+                    this.AddBuildingGreyed = false;
+                    this._model.sqlExceptionThrown += new DashboardModel.SqlExceptionDelegate(this.HandleSqlException);
+                }
+            }
         }
 
-        public void SetControlType(string item)
+        public bool AddRoomGreyed
         {
-            _selectedAddControlType = item;
+            get => this._addRoomGreyed;
+            set => this.SetProperty<bool>(ref this._addRoomGreyed, value, nameof(AddRoomGreyed));
         }
 
-        public void SetRoomType(string item)
+        public bool AddBuildingGreyed
         {
-            _selectedAddRoomType = item;
+            get => this._addBuildingGreyed;
+            set => this.SetProperty<bool>(ref this._addBuildingGreyed, value, nameof(AddBuildingGreyed));
         }
 
-        //I'd really like to find a better way of doing this checked unchecked thing it erks me
+        public List<GridListItemViewModel<ControlType>> GridControlTypes
+        {
+            get => this._gridControlTypes;
+            set => this.SetProperty<List<GridListItemViewModel<ControlType>>>(ref this._gridControlTypes, value, nameof(GridControlTypes));
+        }
+
+        public List<GridListItemViewModel<TypeDesc>> GridTypeDescs
+        {
+            get => this._gridTypeDescs;
+            set => this.SetProperty<List<GridListItemViewModel<TypeDesc>>>(ref this._gridTypeDescs, value, nameof(GridTypeDescs));
+        }
+
+        public List<string> RoomControlTypes
+        {
+            get => this._roomControlTypes;
+            set => this.SetProperty<List<string>>(ref this._roomControlTypes, value, nameof(RoomControlTypes));
+        }
+
+        public List<string> RoomTypes
+        {
+            get => this._roomTypes;
+            set => this.SetProperty<List<string>>(ref this._roomTypes, value, nameof(RoomTypes));
+        }
+
+        public bool AddBuildingIsEnabled
+        {
+            get => this._addBuildingIsEnabled;
+            set => this.SetProperty<bool>(ref this._addBuildingIsEnabled, value, nameof(AddBuildingIsEnabled));
+        }
+
+        public bool AddRoomIsEnabled
+        {
+            get => this._addRoomIsEnabled;
+            set => this.SetProperty<bool>(ref this._addRoomIsEnabled, value, nameof(AddRoomIsEnabled));
+        }
+
+        public string AddRoomName
+        {
+            get => this._addRoomName;
+            set => this.SetProperty<string>(ref this._addRoomName, value, nameof(AddRoomName));
+        }
+
+        public string AddBuildingName
+        {
+            get => this._addBuildingName;
+            set => this.SetProperty<string>(ref this._addBuildingName, value, nameof(AddBuildingName));
+        }
+
+        public string AddBuildingCode
+        {
+            get => this._addBuildingCode;
+            set => this.SetProperty<string>(ref this._addBuildingCode, value, nameof(AddBuildingCode));
+        }
+
+        public List<string> RoomTypeAdds
+        {
+            get => this._roomTypeAdds;
+            set => this.SetProperty<List<string>>(ref this._roomTypeAdds, value, nameof(RoomTypeAdds));
+        }
+
+        public List<string> RoomTypeRemoves
+        {
+            get => this._roomTypeRemoves;
+            set => this.SetProperty<List<string>>(ref this._roomTypeRemoves, value, nameof(RoomTypeRemoves));
+        }
+
+        public List<string> ControlTypeAdds
+        {
+            get => this._controlTypeAdds;
+            set => this.SetProperty<List<string>>(ref this._controlTypeAdds, value, nameof(ControlTypeAdds));
+        }
+
+        public List<string> BuildingDisables
+        {
+            get => this._buildingDisables;
+            set => this.SetProperty<List<string>>(ref this._buildingDisables, value, nameof(BuildingDisables));
+        }
+
+        public List<string> BuildingEnables
+        {
+            get => this._buildingEnables;
+            set => this.SetProperty<List<string>>(ref this._buildingEnables, value, nameof(BuildingEnables));
+        }
+
+        public List<string> RoomDisables
+        {
+            get => this._roomDisables;
+            set => this.SetProperty<List<string>>(ref this._roomDisables, value, nameof(RoomDisables));
+        }
+
+        public List<string> RoomEnables
+        {
+            get => this._roomEnables;
+            set => this.SetProperty<List<string>>(ref this._roomEnables, value, nameof(RoomEnables));
+        }
+
+        public List<string> ControlTypeRemoves
+        {
+            get => this._controlTypeRemoves;
+            set => this.SetProperty<List<string>>(ref this._controlTypeRemoves, value, nameof(ControlTypeRemoves));
+        }
+
+        public List<string> RoomDescriptionAdds
+        {
+            get => this._roomDescriptionAdds;
+            set => this.SetProperty<List<string>>(ref this._roomDescriptionAdds, value, nameof(RoomDescriptionAdds));
+        }
+
+        public List<string> RoomDescriptionRemoves
+        {
+            get => this._roomDescriptionRemoves;
+            set => this.SetProperty<List<string>>(ref this._roomDescriptionRemoves, value, nameof(RoomDescriptionRemoves));
+        }
+
+        public List<GridListItemViewModel<FeatureDesc>> RoomFeatures
+        {
+            get => this._roomFeatures;
+            set => this.SetProperty<List<GridListItemViewModel<FeatureDesc>>>(ref this._roomFeatures, value, nameof(RoomFeatures));
+        }
+
+        public List<Classroom> DBClassrooms
+        {
+            get => this._dbClassrooms;
+            set => this.SetProperty<List<Classroom>>(ref this._dbClassrooms, value, nameof(DBClassrooms));
+        }
+
+        public List<Building> DBBuildings
+        {
+            get => this._dbBuildings;
+            set => this.SetProperty<List<Building>>(ref this._dbBuildings, value, nameof(DBBuildings));
+        }
+
+        private async void HandleSqlException(string message)
+        {
+            MessageDialogResult result = await this._dialogCoordinator.ShowMessageAsync((object)this, "Error has occured", message, settings: new MetroDialogSettings()
+            {
+                AffirmativeButtonText = "Dismiss"
+            });
+        }
+
+        public void SetControlType(string item) => this._selectedAddControlType = item;
+
+        public void SetRoomType(string item) => this._selectedAddRoomType = item;
+
         public void FeatureChecked(string updatedFeature)
         {
-            var feature = _roomFeatures.Where(x => x.Feature.Description == updatedFeature);
-            if (feature.First().FeatureIsEnabled)
-            {
-                RoomDescriptionRemoves.Remove(updatedFeature);
-            }
+            if (this._roomFeatures.Where<GridListItemViewModel<FeatureDesc>>((Func<GridListItemViewModel<FeatureDesc>, bool>)(x => x.Data.Description == updatedFeature)).First<GridListItemViewModel<FeatureDesc>>().IsEnabled)
+                this.RoomDescriptionRemoves.Remove(updatedFeature);
             else
-            {
-                RoomDescriptionAdds.Add(updatedFeature);
-            }
+                this.RoomDescriptionAdds.Add(updatedFeature);
         }
 
         public async void AddBuilding()
         {
-            var result = await _dialogCoordinator.ShowMessageAsync(this, "Commit Changes to Database", "Are you sure? This action cannot be undone", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "Confirm", NegativeButtonText = "Decline" });
-
-            if (result == MessageDialogResult.Affirmative)
+            try
             {
-                _model.AddBuilding(AddBuildingName, AddBuildingCode, AddBuildingIsEnabled);
-                ClearAddBuildingText();
+                MessageDialogResult result = await this._dialogCoordinator.ShowMessageAsync((object)this, "Commit Changes to Database", "Are you sure? This action cannot be undone", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
+                {
+                    AffirmativeButtonText = "Confirm",
+                    NegativeButtonText = "Decline"
+                });
+                if (result != MessageDialogResult.Affirmative)
+                    return;
+                this._model.AddBuilding(this.AddBuildingName, this.AddBuildingCode, this.AddBuildingIsEnabled);
+                this.DBBuildings.Clear();
+                this.DBBuildings = this._model.GetBuildingNames().OrderBy<Building, string>((Func<Building, string>)(x => x.BuildingName)).ToList<Building>();
+                int index = this.DBBuildings.IndexOf(this.DBBuildings.Where<Building>((Func<Building, bool>)(x => x.BuildingName == this.AddBuildingName)).First<Building>());
+                this.UpdateBuildingList(index);
+                this.ClearAddBuildingText();
+            }
+            catch
+            {
             }
         }
 
         public void ClearAddBuildingText()
         {
-            AddBuildingName = string.Empty;
-            AddBuildingCode = string.Empty;
-            AddBuildingIsEnabled = false;
+            this.AddBuildingName = string.Empty;
+            this.AddBuildingCode = string.Empty;
+            this.AddBuildingIsEnabled = false;
         }
 
         public void ClearAddClassroomText()
         {
-            AddRoomName = string.Empty;
-            AddRoomIsEnabled = false;
+            this.AddRoomName = string.Empty;
+            this.AddRoomIsEnabled = false;
         }
 
         public async void AddClassroom()
         {
-
-            var buildingId = _model.GetBuildingCodeForBuildingName(_selectedBuilding);
-
-            if (buildingId != null)
+            int? buildingId = new int?();
+            try
             {
-                var result = await _dialogCoordinator.ShowMessageAsync(this, "Commit Changes to Database", "Are you sure? This action cannot be undone", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "Confirm", NegativeButtonText = "Decline" });
-
+                buildingId = this._model.GetBuildingCodeForBuildingName(this._selectedBuilding);
+                if (!buildingId.HasValue)
+                    return;
+                MessageDialogResult result = await this._dialogCoordinator.ShowMessageAsync((object)this, "Commit Changes to Database", "Are you sure? This action cannot be undone", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
+                {
+                    AffirmativeButtonText = "Confirm",
+                    NegativeButtonText = "Decline"
+                });
                 if (result == MessageDialogResult.Affirmative)
                 {
-                    _model.AddClassroom(buildingId.Value, AddRoomName, _selectedAddRoomType, _selectedAddControlType, 50, AddRoomIsEnabled);
-                    ClearAddBuildingText();
+                    this._model.AddClassroom(buildingId.Value, this.AddRoomName, this._selectedAddRoomType, this._selectedAddControlType, 50, this.AddRoomIsEnabled);
+                    this.DBClassrooms.Clear();
+                    this.DBClassrooms = this._model.GetClassroomNames(this._selectedBuilding).OrderBy<Classroom, string>((Func<Classroom, string>)(x => x.RoomNumber)).ToList<Classroom>();
+                    if (this.DBClassrooms.Count > 0)
+                    {
+                        int index = this.DBClassrooms.IndexOf(this.DBClassrooms.Where<Classroom>((Func<Classroom, bool>)(x => x.RoomNumber == this.AddRoomName)).First<Classroom>());
+                        this.UpdateRoomList(index);
+                    }
+                    this.ClearAddClassroomText();
                 }
+            }
+            catch
+            {
             }
         }
 
         public void RoomTypeChecked(string updatedType)
         {
-            var type = GridTypeDescs.Where(x => x.Type.Description == updatedType);
-            if (type.First().RoomHasType)
-            {
-                RoomTypeRemoves.Remove(updatedType);
-            }
+            if (this.GridTypeDescs.Where<GridListItemViewModel<TypeDesc>>((Func<GridListItemViewModel<TypeDesc>, bool>)(x => x.Data.Description == updatedType)).First<GridListItemViewModel<TypeDesc>>().IsEnabled)
+                this.RoomTypeRemoves.Remove(updatedType);
             else
-            {
-                RoomTypeAdds.Add(updatedType);
-            }
+                this.RoomTypeAdds.Add(updatedType);
         }
 
         public void RoomTypeUnchecked(string updatedType)
         {
-            var type = GridTypeDescs.Where(x => x.Type.Description == updatedType);
-            if (type.First().RoomHasType)
-            {
-                RoomTypeRemoves.Add(updatedType);
-            }
+            if (this.GridTypeDescs.Where<GridListItemViewModel<TypeDesc>>((Func<GridListItemViewModel<TypeDesc>, bool>)(x => x.Data.Description == updatedType)).First<GridListItemViewModel<TypeDesc>>().IsEnabled)
+                this.RoomTypeRemoves.Add(updatedType);
             else
-            {
-                RoomTypeAdds.Remove(updatedType);
-            }
+                this.RoomTypeAdds.Remove(updatedType);
         }
 
         public void ControlTypeChecked(string updatedType)
         {
-            var type = GridControlTypes.Where(x => x.Type.Description == updatedType);
-            if (type.First().RoomHasType)
-            {
-                ControlTypeRemoves.Remove(updatedType);
-            }
+            if (this.GridControlTypes.Where<GridListItemViewModel<ControlType>>((Func<GridListItemViewModel<ControlType>, bool>)(x => x.Data.Description == updatedType)).First<GridListItemViewModel<ControlType>>().IsEnabled)
+                this.ControlTypeRemoves.Remove(updatedType);
             else
-            {
-                ControlTypeAdds.Add(updatedType);
-            }
+                this.ControlTypeAdds.Add(updatedType);
+        }
+
+        public void RoomDisabled(string RoomNumber)
+        {
+            if (this.DBClassrooms.Where<Classroom>((Func<Classroom, bool>)(x => x.RoomNumber == RoomNumber)).First<Classroom>().Enabled.Value)
+                this.RoomDisables.Add(RoomNumber);
+            else
+                this.RoomEnables.Remove(RoomNumber);
+        }
+
+        public void RoomEnabled(string RoomNumber)
+        {
+            if (this.DBClassrooms.Where<Classroom>((Func<Classroom, bool>)(x => x.RoomNumber == RoomNumber)).First<Classroom>().Enabled.Value)
+                this.RoomDisables.Remove(RoomNumber);
+            else
+                this.RoomEnables.Add(RoomNumber);
+        }
+
+        public void BuildingDisabled(string buildingName)
+        {
+            if (this.DBBuildings.Where<Building>((Func<Building, bool>)(x => x.BuildingName == buildingName)).First<Building>().Enabled.Value)
+                this.BuildingDisables.Add(buildingName);
+            else
+                this.BuildingEnables.Remove(buildingName);
+        }
+
+        public void BuildingEnabled(string buildingName)
+        {
+            if (this.DBBuildings.Where<Building>((Func<Building, bool>)(x => x.BuildingName == buildingName)).First<Building>().Enabled.Value)
+                this.BuildingDisables.Remove(buildingName);
+            else
+                this.BuildingEnables.Add(buildingName);
         }
 
         public void ControlTypeUnchecked(string updatedType)
         {
-            var type = GridControlTypes.Where(x => x.Type.Description == updatedType);
-            if (type.First().RoomHasType)
-            {
-                ControlTypeRemoves.Add(updatedType);
-            }
+            if (this.GridControlTypes.Where<GridListItemViewModel<ControlType>>((Func<GridListItemViewModel<ControlType>, bool>)(x => x.Data.Description == updatedType)).First<GridListItemViewModel<ControlType>>().IsEnabled)
+                this.ControlTypeRemoves.Add(updatedType);
             else
-            {
-                ControlTypeAdds.Remove(updatedType);
-            }
+                this.ControlTypeAdds.Remove(updatedType);
         }
 
         public void FeatureUnchecked(string updatedFeature)
         {
-            var feature = _roomFeatures.Where(x => x.Feature.Description == updatedFeature);
-            if (feature.First().FeatureIsEnabled)
-            {
-                RoomDescriptionRemoves.Add(updatedFeature);
-            }
+            if (this._roomFeatures.Where<GridListItemViewModel<FeatureDesc>>((Func<GridListItemViewModel<FeatureDesc>, bool>)(x => x.Data.Description == updatedFeature)).First<GridListItemViewModel<FeatureDesc>>().IsEnabled)
+                this.RoomDescriptionRemoves.Add(updatedFeature);
             else
-            {
-                RoomDescriptionAdds.Remove(updatedFeature);
-            }
+                this.RoomDescriptionAdds.Remove(updatedFeature);
         }
 
         public void ClearFeatureChanges()
         {
-            RoomDescriptionRemoves.Clear();
-            RoomDescriptionAdds.Clear();
+            this.RoomDescriptionRemoves.Clear();
+            this.RoomDescriptionAdds.Clear();
+        }
+
+        public void ClearRoomEnables()
+        {
+            this.RoomEnables.Clear();
+            this.RoomDisables.Clear();
+        }
+
+        public void ClearBuildingEnables()
+        {
+            this.BuildingEnables.Clear();
+            this.BuildingDisables.Clear();
+        }
+
+        public void ClearControlTypes()
+        {
+            this.ControlTypeAdds.Clear();
+            this.ControlTypeRemoves.Clear();
+        }
+
+        public void ClearRoomTypes()
+        {
+            this.RoomTypeAdds.Clear();
+            this.RoomTypeRemoves.Clear();
         }
 
         public async void CommitChanges()
         {
-            var buildingId = _model.GetBuildingCodeForBuildingName(_selectedBuilding);
-            var featureIdsToAdd = _model.GetFeatureDescs(RoomDescriptionAdds);
-            var featureIdsToRemove = _model.GetFeatureDescs(RoomDescriptionRemoves);
-
-            if (buildingId != null)
+            int? controlTypeIdToUpdate = new int?();
+            int? typeIdToUpdate = new int?();
+            try
             {
-                var result = await _dialogCoordinator.ShowMessageAsync(this, "Commit Changes to Database", "Are you sure? This action cannot be undone", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "Confirm", NegativeButtonText = "Decline" });
-
-                if (result == MessageDialogResult.Affirmative)
+                int? buildingId = this._model.GetBuildingCodeForBuildingName(this._selectedBuilding);
+                List<int> featureIdsToAdd = this._model.GetFeatureDescs(this.RoomDescriptionAdds);
+                List<int> featureIdsToRemove = this._model.GetFeatureDescs(this.RoomDescriptionRemoves);
+                if (this.ControlTypeAdds.Count > 0)
+                    controlTypeIdToUpdate = this._model.GetControlTypeToUpdate(this.GridControlTypes, this.ControlTypeAdds.First<string>());
+                if (this.RoomTypeAdds.Count > 0)
+                    typeIdToUpdate = this._model.GetTypeIdToUpdate(this.GridTypeDescs, this.RoomTypeAdds.First<string>());
+                if (buildingId.HasValue)
                 {
-                    _model.AddDescriptions(featureIdsToAdd, _roomNumberSelected, buildingId.Value);
-                    _model.RemoveDescriptions(featureIdsToRemove, _roomNumberSelected, buildingId.Value);
-
-                    RoomDescriptionAdds.Clear();
-                    RoomDescriptionRemoves.Clear();
+                    MessageDialogResult result = await this._dialogCoordinator.ShowMessageAsync((object)this, "Commit Changes to Database", "Are you sure? This action cannot be undone", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
+                    {
+                        AffirmativeButtonText = "Confirm",
+                        NegativeButtonText = "Decline"
+                    });
+                    if (result == MessageDialogResult.Affirmative)
+                    {
+                        if ((uint)featureIdsToAdd.Count > 0U)
+                            this._model.AddDescriptions(featureIdsToAdd, this._roomNumberSelected, buildingId.Value);
+                        if ((uint)featureIdsToRemove.Count > 0U)
+                            this._model.RemoveDescriptions(featureIdsToRemove, this._roomNumberSelected, buildingId.Value);
+                        if (controlTypeIdToUpdate.HasValue)
+                            this._model.UpdateControlType(controlTypeIdToUpdate.Value, this._selectedBuilding, this._roomNumberSelected);
+                        if (typeIdToUpdate.HasValue)
+                            this._model.UpdateType(typeIdToUpdate.Value, this._selectedBuilding, this._roomNumberSelected);
+                        if (this.RoomEnables.Count > 0)
+                            this._model.SetRoomEnables(this.RoomEnables, this._selectedBuilding);
+                        if (this.RoomDisables.Count > 0)
+                            this._model.SetRoomDisables(this.RoomDisables, this._selectedBuilding);
+                        if (this.BuildingEnables.Count > 0)
+                            this._model.SetBuildingEnables(this.BuildingEnables);
+                        if (this.BuildingDisables.Count > 0)
+                            this._model.SetBuildingDisables(this.BuildingDisables);
+                        this.ClearRoomEnables();
+                        this.ClearBuildingEnables();
+                        this.ClearFeatureChanges();
+                        this.ControlTypeAdds.Clear();
+                        this.ControlTypeRemoves.Clear();
+                        this.RoomTypeAdds.Clear();
+                        this.RoomTypeRemoves.Clear();
+                        this.UpdateClassroomDataGrid();
+                        this.UpdateBuildingDataGrid();
+                        this.UpdateDashboardLists();
+                        if (this.DBClassrooms.Count > 0)
+                        {
+                            int index = this.DBClassrooms.IndexOf(this.DBClassrooms.Where<Classroom>((Func<Classroom, bool>)(x => x.RoomNumber == this._roomNumberSelected)).First<Classroom>());
+                            this.UpdateRoomList(index);
+                        }
+                    }
                 }
+                buildingId = new int?();
+                featureIdsToAdd = (List<int>)null;
+                featureIdsToRemove = (List<int>)null;
+            }
+            catch
+            {
             }
         }
 
-        public List<ControlTypeViewModel> GridControlTypes
+        private void UpdateBuildingDataGrid()
         {
-            get
+            try
             {
-                return _gridControlTypes;
+                this.DBBuildings.Clear();
+                this.DBBuildings = this._model.GetBuildingNames();
             }
-
-            set
+            catch
             {
-                SetProperty(ref _gridControlTypes, value);
             }
         }
 
-        public List<RoomTypeViewModel> GridTypeDescs
+        private void UpdateClassroomDataGrid()
         {
-            get
+            try
             {
-                return _gridTypeDescs;
+                this.DBClassrooms.Clear();
+                this.DBClassrooms = this._model.GetClassroomNames(this._selectedBuilding).OrderBy<Classroom, string>((Func<Classroom, string>)(x => x.RoomNumber)).ToList<Classroom>();
             }
-
-            set
+            catch
             {
-                SetProperty(ref _gridTypeDescs, value);
-            }
-        }
-
-        public List<string> RoomControlTypes
-        {
-            get
-            {
-                return _roomControlTypes;
-            }
-
-            set
-            {
-                SetProperty(ref _roomControlTypes, value);
-            }
-        }
-
-        public List<string> RoomTypes
-        {
-            get
-            {
-                return _roomTypes;
-            }
-
-            set
-            {
-                SetProperty(ref _roomTypes, value);
-            }
-        }
-
-        public bool AddBuildingIsEnabled
-        {
-            get
-            {
-                return _addBuildingIsEnabled;
-            }
-
-            set
-            {
-                SetProperty(ref _addBuildingIsEnabled, value);
-            }
-        }
-
-        public bool AddRoomIsEnabled
-        {
-            get
-            {
-                return _addRoomIsEnabled;
-            }
-
-            set
-            {
-                SetProperty(ref _addRoomIsEnabled, value);
-            }
-        }
-
-        public string AddRoomName
-        {
-            get
-            {
-                return _addRoomName;
-            }
-
-            set
-            {
-                SetProperty(ref _addRoomName, value);
-            }
-        }
-
-        public string AddBuildingName
-        {
-            get
-            {
-                return _addBuildingName;
-            }
-
-            set
-            {
-                SetProperty(ref _addBuildingName, value);
-            }
-        }
-
-        public string AddBuildingCode
-        {
-            get
-            {
-                return _addBuildingCode;
-            }
-
-            set
-            {
-                SetProperty(ref _addBuildingCode, value);
-            }
-        }
-
-        public List<string> RoomTypeAdds
-        {
-            get
-            {
-                return _roomTypeAdds;
-            }
-            
-            set
-            {
-                SetProperty(ref _roomTypeAdds, value);
-            }
-        }
-
-        public List<string> RoomTypeRemoves
-        {
-            get
-            {
-                return _roomTypeRemoves;
-            }
-
-            set
-            {
-                SetProperty(ref _roomTypeRemoves, value);
-            }
-        }
-
-        public List<string> ControlTypeAdds
-        {
-            get
-            {
-                return _controlTypeAdds;
-            }
-
-            set
-            {
-                SetProperty(ref _controlTypeAdds, value);
-            }
-        }
-
-        public List<string> ControlTypeRemoves
-        {
-            get
-            {
-                return _controlTypeRemoves;
-            }
-
-            set
-            {
-                SetProperty(ref _controlTypeRemoves, value);
-            }
-        }
-
-        public List<string> RoomDescriptionAdds
-        {
-            get
-            {
-                return _roomDescriptionAdds;
-            }
-
-            set
-            {
-                SetProperty(ref _roomDescriptionAdds, value);
-            }
-        }
-
-        public List<string> RoomDescriptionRemoves
-        {
-            get
-            {
-                return _roomDescriptionRemoves;
-            }
-
-            set
-            {
-                SetProperty(ref _roomDescriptionRemoves, value);
-            }
-        }
-
-        public List<RoomFeatureDataItemViewModel> RoomFeatures
-        {
-            get
-            {
-                return _roomFeatures;
-            }
-
-            set
-            {
-                SetProperty(ref _roomFeatures, value);
-            }
-        }
-
-        public List<Classroom> DBClassrooms
-        {
-            get
-            {
-                return _dbClassrooms;
-            }
-
-            set
-            {
-                SetProperty(ref _dbClassrooms, value);
-            }
-        }
-
-
-        public List<Building> DBBuildings
-        {
-            get
-            {
-                return _dbBuildings;
-            }
-
-            set
-            {
-                SetProperty(ref _dbBuildings, value);
             }
         }
 
         public void BuildingSelected(string item)
         {
-            _selectedBuilding = item;
-
-            DBClassrooms = _model.GetClassroomNames(item);
+            try
+            {
+                this._selectedBuilding = item;
+                this.DBClassrooms = this._model.GetClassroomNames(item);
+            }
+            catch
+            {
+                return;
+            }
+            this.UpdateRoomList(0);
+            this.ClearRoomEnables();
         }
 
         public void RoomSelected(string item)
         {
-            _roomNumberSelected = item;
-            RoomFeatures = _model.GetRoomFeatures(item);
-            GridControlTypes = _model.GetRoomControlTypes(_roomNumberSelected, _selectedBuilding);
-            GridTypeDescs = _model.GetRoomDescTypes(_roomNumberSelected, _selectedBuilding);
+            this._roomNumberSelected = item;
+            this.ClearFeatureChanges();
+            this.ClearControlTypes();
+            this.ClearRoomTypes();
+            try
+            {
+                this.RoomFeatures = this._model.GetRoomFeatures(item);
+                this.GridControlTypes = this._model.GetRoomControlTypes(this._roomNumberSelected, this._selectedBuilding);
+                this.GridTypeDescs = this._model.GetRoomDescTypes(this._roomNumberSelected, this._selectedBuilding);
+            }
+            catch
+            {
+            }
         }
+
+        public void ResetChanges()
+        {
+            this.ClearRoomEnables();
+            this.ClearBuildingEnables();
+            this.ClearFeatureChanges();
+            this.ClearControlTypes();
+            this.ClearRoomTypes();
+            this.UpdateClassroomDataGrid();
+            this.UpdateBuildingDataGrid();
+            this.UpdateDashboardLists();
+            try
+            {
+                this.RoomFeatures = this._model.GetRoomFeatures(this._roomNumberSelected);
+                this.GridControlTypes = this._model.GetRoomControlTypes(this._roomNumberSelected, this._selectedBuilding);
+                this.GridTypeDescs = this._model.GetRoomDescTypes(this._roomNumberSelected, this._selectedBuilding);
+            }
+            catch
+            {
+            }
+        }
+
+        public delegate void BuildingListUpdateDelegate(int itemIndex);
+
+        public delegate void RoomListUpdateDelegate(int itemIndex);
+
+        public delegate void UpdateDashboardStatus();
     }
 }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -17,7 +18,10 @@ namespace TLTDatabaseEditor
         {
         }
 
-        public void ExportExcelData(ref ProgressDialogController controller)
+        public void ExportExcelData(
+      List<GridListItemViewModel<Building>> dbBuildings,
+      ref ProgressDialogController controller,
+      ref CancellationToken ct)
         {
             double buildingIndex = 0;
 
@@ -25,49 +29,56 @@ namespace TLTDatabaseEditor
             excelApp.Workbooks.Add();
 
             var buildings = GetBuildings();
-            
-            foreach (var building in buildings)
+
+            foreach (var listItemViewModel in dbBuildings.Where(x => x.IsEnabled))
             {
-                double progress = buildingIndex / buildings.Count;
-                controller.SetProgress(progress);
-                buildingIndex++;
-
-                Excel._Worksheet activeWorkSheet = (Excel.Worksheet)excelApp.ActiveSheet;
-                activeWorkSheet.Name = building;
-
-                //get view for building
-                var view = GetViewDescriptionDataForBuilding(building);
-
-                activeWorkSheet.Cells[1, "A"] = "Room Number";
-                activeWorkSheet.Cells[1, "B"] = "Features";
-
-                var rowIndex = 2;
-
-                var currentRoomNumber = string.Empty;
-
-                foreach (var room in view)
+                if (!ct.IsCancellationRequested)
                 {
-                    if (room.RoomNumber != currentRoomNumber)
+                    double progress = buildingIndex / buildings.Count;
+                    controller.SetProgress(progress);
+                    buildingIndex++;
+
+                    Excel._Worksheet activeWorkSheet = (Excel.Worksheet)excelApp.ActiveSheet;
+                    activeWorkSheet.Name = listItemViewModel.Data.BuildingCode;
+
+
+                    //get view for building
+                    var view = GetViewDescriptionDataForBuilding(listItemViewModel.Data.BuildingCode);
+
+                    activeWorkSheet.Cells[1, "A"] = "Room Number";
+                    activeWorkSheet.Cells[1, "B"] = "Features";
+
+                    var rowIndex = 2;
+                    var currentRoomNumber = string.Empty;
+
+                    foreach (var room in view)
                     {
-                        currentRoomNumber = room.RoomNumber;
-                        activeWorkSheet.Cells[rowIndex, "A"] = room.RoomNumber;
+                        if (room.RoomNumber != currentRoomNumber)
+                        {
+                            currentRoomNumber = room.RoomNumber;
+                            activeWorkSheet.Cells[rowIndex, "A"] = room.RoomNumber;
+                        }
+
+                        activeWorkSheet.Cells[rowIndex, "B"] = room.Description;
+
+                        rowIndex++;
                     }
-                    
-                    activeWorkSheet.Cells[rowIndex, "B"] = room.Description;
 
-                    rowIndex++;
+                    activeWorkSheet.Columns[1].AutoFit();
+                    activeWorkSheet.Columns[2].AutoFit();
+                    activeWorkSheet.Columns[2].AutoFit();
+                    activeWorkSheet.Columns[2].AutoFit();
+
+                    if (listItemViewModel.Data.BuildingCode != buildings[buildings.Count - 1])
+                    {
+                        excelApp.Worksheets.Add();
+                    }
                 }
-
-                activeWorkSheet.Columns[1].AutoFit();
-                activeWorkSheet.Columns[2].AutoFit();
-                activeWorkSheet.Columns[2].AutoFit();
-                activeWorkSheet.Columns[2].AutoFit();
-
-                if (building != buildings[buildings.Count -1])
-                {
-                    excelApp.Worksheets.Add();
-                }
+                else
+                    break;
             }
+            if (ct.IsCancellationRequested)
+                return;
 
             excelApp.Visible = true;
         }
@@ -90,6 +101,21 @@ namespace TLTDatabaseEditor
             }
 
             return null;
+        }
+
+        public List<GridListItemViewModel<Building>> GetBuildingNames()
+        {
+            if (!this.dc.DatabaseExists())
+                return (List<GridListItemViewModel<Building>>)null;
+            List<GridListItemViewModel<Building>> buildingNames = new List<GridListItemViewModel<Building>>();
+
+            foreach (Building building in dc.Buildings.Where(x => x.Enabled == true).ToList())
+                buildingNames.Add(new GridListItemViewModel<Building>()
+                {
+                    Data = building,
+                    IsEnabled = true
+                });
+            return buildingNames;
         }
     }
 }

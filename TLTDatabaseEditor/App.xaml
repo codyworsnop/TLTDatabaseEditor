@@ -7,81 +7,122 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
-                <!-- Accent and AppTheme setting -->
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-
             <SolidColorBrush x:Key="DefaultBackgroundColor" Color="#2f2c38"/>
-            <SolidColorBrush x:Key="DefaultFontColor" Color="#41b1e1" />
+            <SolidColorBrush x:Key="DefaultFontColor" Color="#41b1e1"/>
             <SolidColorBrush x:Key="DefaultContentAreaBackgroundColor" Color="#F5F5F5"/>
-
             <Style x:Key="GridStyle" TargetType="{x:Type Grid}">
-                <Setter Property="Background" Value="{StaticResource DefaultBackgroundColor}"/>
+                <Setter Property="Panel.Background" Value="{StaticResource DefaultBackgroundColor}"/>
             </Style>
-
+            <Style x:Key="StatusBarGridStyle" TargetType="{x:Type Grid}">
+                <Setter Property="Panel.Background" Value="{StaticResource DefaultBackgroundColor}"/>
+                <Style.Resources>
+                    <Style TargetType="{x:Type Label}">
+                        <Setter Property="Control.Foreground" Value="#FFFFFF"/>
+                    </Style>
+                    <Style TargetType="{x:Type ListView}">
+                        <Setter Property="Control.Background" Value="{StaticResource DefaultBackgroundColor}"/>
+                        <Setter Property="Control.Padding" Value="0"/>
+                        <Setter Property="Control.BorderThickness" Value="0"/>
+                    </Style>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <Setter Property="Control.Background" Value="{StaticResource DefaultBackgroundColor}"/>
+                        <Setter Property="Control.Foreground" Value="#FFFFFF"/>
+                        <Setter Property="Control.BorderThickness" Value="0, 0, 0, 0"/>
+                        <Setter Property="Control.Padding" Value="0, 0, 0, 0"/>
+                        <Setter Property="FrameworkElement.Margin" Value="20, 5, 0, 0"/>
+                    </Style>
+                </Style.Resources>
+            </Style>
             <Style x:Key="TabControlStyle" TargetType="{x:Type TabControl}">
-                <Setter Property="Background" Value="{StaticResource DefaultContentAreaBackgroundColor}" />
-                <Setter Property="BorderThickness" Value="0" />
-                <Setter Property="ItemContainerStyle">
+                <Setter Property="Control.Background" Value="{StaticResource DefaultContentAreaBackgroundColor}"/>
+                <Setter Property="Control.BorderThickness" Value="0"/>
+                <Setter Property="ItemsControl.ItemContainerStyle">
                     <Setter.Value>
-                        <Style TargetType="TabItem" BasedOn="{StaticResource MetroTabItem}">
-                            <Setter Property="Background" Value="{StaticResource DefaultBackgroundColor}"/>
+                        <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource MetroTabItem}">
+                            <Setter Property="Control.Background" Value="{StaticResource DefaultBackgroundColor}"/>
                         </Style>
                     </Setter.Value>
                 </Setter>
             </Style>
-
+            <Style x:Key="StatusBarButtonStyle" TargetType="{x:Type Button}">
+                <Setter Property="Control.Background" Value="#38BEC7"/>
+                <Setter Property="Control.Foreground" Value="#FFFFFF"/>
+                <Setter Property="FrameworkElement.Margin" Value="10, 0, 10, 0"/>
+                <Setter Property="Control.Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Name="border" CornerRadius="4, 4, 4, 4" Background="{TemplateBinding Control.Background}">
+                                <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
+                                  Content="{TemplateBinding ContentControl.Content}"
+                                  HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
+                                  Margin="{TemplateBinding Control.Padding}"
+                                  VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="UIElement.IsMouseOver" Value="true">
+                        <Setter Property="Control.Background" Value="White"/>
+                        <Setter Property="Control.Foreground" Value="Black"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
             <Style x:Key="ListViewStyle" TargetType="{x:Type ListView}">
-                <Setter Property="ItemContainerStyle">
+                <Setter Property="ItemsControl.ItemContainerStyle">
                     <Setter.Value>
                         <Style TargetType="{x:Type ListViewItem}">
-                            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-                            <Setter Property="OverridesDefaultStyle" Value="True"/>
-                            <Setter Property="SnapsToDevicePixels" Value="True"/>
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-                            <Setter Property="Template">
+                            <Setter Property="FrameworkElement.FocusVisualStyle" Value="{x:Null}"/>
+                            <Setter Property="FrameworkElement.OverridesDefaultStyle" Value="true"/>
+                            <Setter Property="UIElement.SnapsToDevicePixels" Value="true"/>
+                            <Setter Property="Control.HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Control.VerticalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Control.Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type ListViewItem}">
                                         <Grid Background="Transparent">
-                                            <Expander BorderThickness="2" Header="{Binding Title}" Foreground="White">
-                                                <ListView BorderThickness="0" ItemsSource="{Binding Title}" SelectedIndex="{Binding SelectedIndex}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible" VirtualizingPanel.ScrollUnit="Pixel" >
-                                                    <ListView.ItemContainerStyle>
-                                                        <Style TargetType="ListViewItem">
-                                                            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-                                                            <Setter Property="OverridesDefaultStyle" Value="True"/>
-                                                            <Setter Property="SnapsToDevicePixels" Value="True"/>
-                                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-                                                            <Setter Property="Template">
+                                            <Expander BorderThickness="2" Foreground="White" Header="{Binding Title}">
+                                                <ListView BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                  ScrollViewer.VerticalScrollBarVisibility="Visible" VirtualizingPanel.ScrollUnit="Pixel"
+                                  ItemsSource="{Binding Title}" SelectedIndex="{Binding SelectedIndex}">
+                                                    <ItemsControl.ItemContainerStyle>
+                                                        <Style TargetType="{x:Type ListViewItem}">
+                                                            <Setter Property="FrameworkElement.FocusVisualStyle" Value="{x:Null}"/>
+                                                            <Setter Property="FrameworkElement.OverridesDefaultStyle" Value="true"/>
+                                                            <Setter Property="UIElement.SnapsToDevicePixels" Value="true"/>
+                                                            <Setter Property="Control.HorizontalContentAlignment" Value="Stretch"/>
+                                                            <Setter Property="Control.VerticalContentAlignment" Value="Stretch"/>
+                                                            <Setter Property="Control.Template">
                                                                 <Setter.Value>
                                                                     <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                                                        <Border Height="Auto" Name="ContentBorder" BorderBrush="{StaticResource DefaultFontColor}" BorderThickness="0,0,0,1" Visibility="Visible" >
+                                                                        <Border Name="ContentBorder" Height="Auto" BorderBrush="{StaticResource DefaultFontColor}"
+                                            BorderThickness="0,0,0,1" Visibility="Visible">
                                                                             <Grid>
                                                                                 <Grid.ColumnDefinitions>
-                                                                                    <ColumnDefinition Width="15" />
-                                                                                    <ColumnDefinition Width="*" />
+                                                                                    <ColumnDefinition Width="15"/>
+                                                                                    <ColumnDefinition Width="*"/>
                                                                                 </Grid.ColumnDefinitions>
-                                                                                <Grid Name="selectCol" Grid.Column="0" Background="White" />
-                                                                                <Label Grid.Column="1" Foreground="{StaticResource DefaultFontColor}" Content="{Binding Title}" />
+                                                                                <Grid Name="selectCol" Column="0" Background="White"/>
+                                                                                <Label Grid.Column="1" Foreground="{StaticResource DefaultFontColor}" Content="{Binding Title}"/>
                                                                             </Grid>
                                                                         </Border>
                                                                         <ControlTemplate.Triggers>
-                                                                            <Trigger Property="IsMouseOver" Value="True">
-                                                                                <Setter Property="Background" TargetName="selectCol"  Value="{StaticResource DefaultFontColor}" />
-                                                                                <Setter Property="BorderBrush" TargetName="ContentBorder" Value="{StaticResource DefaultFontColor}" />
+                                                                            <Trigger Property="UIElement.IsMouseOver" Value="true">
+                                                                                <Setter TargetName="selectCol" Value="{StaticResource DefaultFontColor}" Property="Panel.Background"/>
+                                                                                <Setter TargetName="ContentBorder" Value="{StaticResource DefaultFontColor}" Property="Border.BorderBrush"/>
                                                                             </Trigger>
                                                                         </ControlTemplate.Triggers>
                                                                     </ControlTemplate>
                                                                 </Setter.Value>
                                                             </Setter>
                                                         </Style>
-                                                    </ListView.ItemContainerStyle>
+                                                    </ItemsControl.ItemContainerStyle>
                                                 </ListView>
                                             </Expander>
                                         </Grid>
@@ -91,8 +132,7 @@
                         </Style>
                     </Setter.Value>
                 </Setter>
-            </Style>     
-
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

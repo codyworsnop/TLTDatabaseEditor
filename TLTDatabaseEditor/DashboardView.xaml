@@ -1,13 +1,11 @@
 ﻿<UserControl x:Class="TLTDatabaseEditor.DashboardView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
-             Dialog:DialogParticipation.Register="{Binding}"
              xmlns:local="clr-namespace:TLTDatabaseEditor"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             Dialog:DialogParticipation.Register="{Binding}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="60*"/>
@@ -17,8 +15,7 @@
             <ColumnDefinition Width="80*"/>
             <ColumnDefinition Width="20*"/>
         </Grid.ColumnDefinitions>
-
-        <Grid Grid.Row="0" Grid.Column="0">
+        <Grid Row="0" Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="90*"/>
                 <RowDefinition Height="Auto"/>
@@ -27,180 +24,202 @@
                 <ColumnDefinition Width="50*"/>
                 <ColumnDefinition Width="50*"/>
             </Grid.ColumnDefinitions>
-
-            <DataGrid x:Name="BuildingsDataGrid"
-                      Grid.Column="0"
-                      ItemsSource="{Binding DBBuildings}"
-                      AutoGenerateColumns="False"
-                      SelectionChanged="BuildingSelectionChangedHandler"
-                      SelectionMode="Single"
-                      SelectedIndex="0"
-                      IsReadOnly="True"
-                      Margin="10">
+            <DataGrid SelectionChanged="BuildingSelectionChangedHandler" x:Name="BuildingsDataGrid" Grid.Column="0"
+                AutoGenerateColumns="false" SelectionMode="Single" SelectedIndex="0" IsReadOnly="true" Margin="10"
+                EnableRowVirtualization="false" ItemsSource="{Binding DBBuildings}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Building Name" Binding="{Binding BuildingName}"/>
                     <DataGridTextColumn Header="Building Code" Binding="{Binding BuildingCode}"/>
+                    <DataGridTemplateColumn Header="Enabled">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding Enabled, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-
-            <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
-                <StackPanel>
-                    <Label Margin="10, 0, 0, 0">Building Name</Label>
-                    <TextBox Width="200" Height="10" Margin="10, 0, 0, 0" Text="{Binding AddBuildingName, Mode=TwoWay}"></TextBox>
-                </StackPanel>
-
-                <StackPanel>
-                    <Label Margin="10, 0, 0, 0">Building Code</Label>
-                    <TextBox Width="100" Height="10" Margin="10, 0, 0, 0" Text="{Binding AddBuildingCode, Mode=TwoWay}"></TextBox>
-                </StackPanel>
-
-                <StackPanel>
-                    <Label Margin="10, 0, 0, 0">Building Enabled</Label>
-                    <CheckBox Margin="10, 0, 0, 0" IsChecked="{Binding AddBuildingIsEnabled, Mode=TwoWay}"></CheckBox>
-                </StackPanel>
-
-                <Button Click="AddBuildingHandler" Height="10" Margin="10, 0, 0, 0">Add Building</Button>
-            </StackPanel>
-
-            <DataGrid x:Name="RoomDataGrid"
-                      Grid.Column="1"
-                      ItemsSource="{Binding DBClassrooms}"
-                      AutoGenerateColumns="False"
-                      SelectionChanged="ClassroomSelectionChangedHandler"
-                      SelectionMode="Single"
-                      SelectedIndex="0"
-                      IsReadOnly="True"
-                      Margin="10">
+            <DataGrid SelectionChanged="ClassroomSelectionChangedHandler" x:Name="RoomDataGrid" Grid.Column="1"
+                AutoGenerateColumns="false" SelectionMode="Single" SelectedIndex="0" IsReadOnly="true" Margin="10"
+                EnableRowVirtualization="false" ItemsSource="{Binding DBClassrooms}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Room Number" Binding="{Binding RoomNumber}"/>
+                    <DataGridTemplateColumn Header="Enabled">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding Enabled, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-
-            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
-                <StackPanel Margin="10, 0, 0, 0">
-                    <Label>Room Number</Label>
-                    <TextBox Width="100" Height="10" Text="{Binding AddRoomName, Mode=TwoWay}"></TextBox>
-                </StackPanel>
-
-                <StackPanel Margin="10, 0, 0, 0">
-                    <Label>Control Type</Label>
-                    <ComboBox Width="100" ItemsSource="{Binding RoomControlTypes}" SelectionChanged="AddControlTypeHandler"></ComboBox>
-                </StackPanel>
-
-                <StackPanel Margin="10, 0, 0, 0">
-                    <Label>Room Type</Label>
-                    <ComboBox Width="100" ItemsSource="{Binding RoomTypes}" SelectionChanged="AddRoomTypeHandler"></ComboBox>
-                </StackPanel>
-
-                <StackPanel Margin="10, 0, 0, 0">
-                    <Label>Room Enabled</Label>
-                    <CheckBox IsChecked="{Binding AddRoomIsEnabled, Mode=TwoWay}"></CheckBox>
-                </StackPanel>
-
-                <Button Click="AddRoomHandler" Height="10" Margin="10, 0, 0, 0">Add Room</Button>
-            </StackPanel>
         </Grid>
-
-
-        <Grid Grid.Row="1" Grid.Column="0">
-
+        <Grid Row="1" Column="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-
-
-            <DataGrid Grid.Column="0"
-                      ItemsSource="{Binding RoomFeatures}"
-                      AutoGenerateColumns="False"
-                      IsReadOnly="True"
-                      Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <DataGrid Grid.Column="0" Grid.RowSpan="2" AutoGenerateColumns="false" IsReadOnly="true" Margin="10"
+                ItemsSource="{Binding RoomFeatures}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Feature Description" Binding="{Binding Feature.Description}" />
+                    <DataGridTextColumn Header="Feature Description" Binding="{Binding Data.Description}"/>
                     <DataGridTemplateColumn Header="Has Feature">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <CheckBox IsChecked="{Binding FeatureIsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" Checked="FeatureCheckedHandler" Unchecked="FeatureUncheckedHandler"/>
+                                <CheckBox IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-
-            <DataGrid Grid.Column="1"
-                      ItemsSource="{Binding GridControlTypes}"
-                      AutoGenerateColumns="False"
-                      IsReadOnly="True"
-                      Margin="10">
+            <DataGrid Grid.Column="1" AutoGenerateColumns="false" IsReadOnly="true" Margin="10"
+                ItemsSource="{Binding GridControlTypes}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Control Type Description" Binding="{Binding Type.Description}"/>
-                    <DataGridTemplateColumn Header="Has Feature">
+                    <DataGridTextColumn Header="Control Type Description" Binding="{Binding Data.Description}"/>
+                    <DataGridTemplateColumn>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <RadioButton GroupName="ControlTypeRadioButtons" IsChecked="{Binding RoomHasType, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" Checked="ControlTypeCheckedHandler" Unchecked="ControlTypeUncheckedHandler"/>
+                                <RadioButton GroupName="ControlTypeRadioButtons"
+                             IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-
-            <DataGrid Grid.Column="2"
-                      ItemsSource="{Binding GridTypeDescs}"
-                      AutoGenerateColumns="False"
-                      IsReadOnly="True"
-                      Margin="10">
+            <DataGrid Grid.Column="1" Grid.Row="1" AutoGenerateColumns="false" IsReadOnly="true" Margin="10"
+                ItemsSource="{Binding GridTypeDescs}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Type Description" Binding="{Binding Type.Description}"/>
-                    <DataGridTemplateColumn Header="Has Feature">
+                    <DataGridTextColumn Header="Type Description" Binding="{Binding Data.Description}"/>
+                    <DataGridTemplateColumn>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <RadioButton GroupName="TypeeRadioButtons" IsChecked="{Binding RoomHasType, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" Checked="TypeCheckedHandler" Unchecked="TypeUncheckedHandler"/>
+                                <RadioButton GroupName="TypeeRadioButtons"
+                             IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
+            <Border Grid.Column="2" BorderThickness="1" BorderBrush="Gray" CornerRadius="8, 8, 8, 8"
+              Margin="10, 10, 10, 0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="70*"/>
+                        <RowDefinition Height="30*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel>
+                            <Label Margin="10, 0, 0, 0">Building Name</Label>
+                            <TextBox TextChanged="AddBuildingNameTextChangedHandler" x:Name="AddBuildingNameText" Width="100"
+                       Height="10" Margin="10, 0, 0, 0" Text="{Binding AddBuildingName, Mode=TwoWay}"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <Label Margin="10, 0, 0, 0">Building Code</Label>
+                            <TextBox TextChanged="AddBuildingCodeTextChangedHandler" x:Name="AddBuildingCodeText" Width="100"
+                       Height="10" Margin="10, 0, 0, 0" Text="{Binding AddBuildingCode, Mode=TwoWay}"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <Label Margin="10, 0, 0, 0">Building Enabled</Label>
+                            <CheckBox Margin="10, 0, 0, 0" IsChecked="{Binding AddBuildingIsEnabled, Mode=TwoWay}"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <Button Click="AddBuildingHandler" Grid.Row="1" Height="30" Margin="10, 10, 10, 0"
+                  IsEnabled="{Binding AddBuildingGreyed}">Add Building</Button>
+                </Grid>
+            </Border>
+            <Border Grid.Column="2" Grid.Row="1" BorderThickness="1" BorderBrush="Gray" CornerRadius="8, 8, 8, 8"
+              Margin="10, 10, 10, 0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="70*"/>
+                        <RowDefinition Height="30*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Margin="10, 0, 0, 0">
+                            <Label>Room Number</Label>
+                            <TextBox TextChanged="AddRoomNameTextChangedHandler" x:Name="AddRoomNameText" Width="100" Height="10"
+                       Text="{Binding AddRoomName, Mode=TwoWay}"/>
+                        </StackPanel>
+                        <StackPanel Margin="10, 0, 0, 0">
+                            <Label>Control Type</Label>
+                            <ComboBox SelectionChanged="AddControlTypeHandler" x:Name="AddRoomControlTypeCombo" Width="100"
+                        ItemsSource="{Binding RoomControlTypes}"/>
+                        </StackPanel>
+                        <StackPanel Margin="10, 0, 0, 0">
+                            <Label>Room Type</Label>
+                            <ComboBox SelectionChanged="AddRoomTypeHandler" x:Name="AddRoomTypeCombo" Width="100"
+                        ItemsSource="{Binding RoomTypes}"/>
+                        </StackPanel>
+                        <StackPanel Margin="10, 0, 0, 0">
+                            <Label>Room Enabled</Label>
+                            <CheckBox IsChecked="{Binding AddRoomIsEnabled, Mode=TwoWay}"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <Button Click="AddRoomHandler" Grid.Row="1" Height="30" Margin="10, 10, 10, 0"
+                  IsEnabled="{Binding AddRoomGreyed}">Add Room</Button>
+                </Grid>
+            </Border>
         </Grid>
-
-        <Grid Grid.Column="1" Grid.RowSpan="2">
-            <Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Visible" Grid.Column="1" Grid.RowSpan="2">
+            <Grid Style="{StaticResource StatusBarGridStyle}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="90*"/>
-                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="5*"/>
+                    <RowDefinition Height="5*"/>
                 </Grid.RowDefinitions>
                 <StackPanel>
-                    <Label Margin="20, 0, 0, 0" FontWeight="Bold">Room Description Changes</Label>
+                    <Label Margin="20, 0, 0, 0" FontWeight="Bold">
+                        Room Description Changes
+                    </Label>
                     <StackPanel Grid.Row="0">
                         <Label>Added</Label>
                         <ListView x:Name="AddListView" ItemsSource="{Binding RoomDescriptionAdds}"/>
-
                         <Label>Removed</Label>
                         <ListView x:Name="RemoveListView" ItemsSource="{Binding RoomDescriptionRemoves}"/>
                     </StackPanel>
-
-                    <Label Margin="10, 40, 0, 0" FontWeight="Bold">Control Type Changes</Label>
+                    <Label Margin="10, 40, 0, 0" FontWeight="Bold">
+                        Control Type Changes
+                    </Label>
                     <StackPanel Grid.Row="0">
                         <Label>Added</Label>
                         <ListView x:Name="AddControlTypeListView" ItemsSource="{Binding ControlTypeAdds}"/>
-
                         <Label>Removed</Label>
                         <ListView x:Name="RemoveControlTypeListView" ItemsSource="{Binding ControlTypeRemoves}"/>
                     </StackPanel>
-
                     <Label Margin="10, 40, 0, 0" FontWeight="Bold">Room Type Changes</Label>
                     <StackPanel Grid.Row="0">
                         <Label>Added</Label>
                         <ListView x:Name="AddRoomTypeListView" ItemsSource="{Binding RoomTypeAdds}"/>
-
                         <Label>Removed</Label>
                         <ListView x:Name="RemoveRoomTypeListView" ItemsSource="{Binding RoomTypeRemoves}"/>
                     </StackPanel>
+                    <Label Margin="10, 40, 0, 0" FontWeight="Bold">
+                        Building Enabled Changes
+                    </Label>
+                    <StackPanel Grid.Row="0">
+                        <Label>Added</Label>
+                        <ListView x:Name="EnabledBuildingListView" ItemsSource="{Binding BuildingEnables}"/>
+                        <Label>Removed</Label>
+                        <ListView x:Name="DisabledBuildingListView" ItemsSource="{Binding BuildingDisables}"/>
+                    </StackPanel>
+                    <Label Margin="10, 40, 0, 0" FontWeight="Bold">
+                        Room Enabled Changes
+                    </Label>
+                    <StackPanel Grid.Row="0">
+                        <Label>Added</Label>
+                        <ListView x:Name="RoomEnabledListView" ItemsSource="{Binding RoomEnables}"/>
+                        <Label>Removed</Label>
+                        <ListView x:Name="RoomDisabledListView" ItemsSource="{Binding RoomDisables}"/>
+                    </StackPanel>
                 </StackPanel>
-
-
-                <Button Grid.Row="1" Click="CommitChangesHandler">Commit</Button>
+                <Button Click="ResetChangesHandler" Grid.Row="1" Height="35" Style="{StaticResource StatusBarButtonStyle}">Reset</Button>
+                <Button Click="CommitChangesHandler" Grid.Row="2" Height="35" Style="{StaticResource StatusBarButtonStyle}">Commit</Button>
             </Grid>
-        </Grid>
+        </ScrollViewer>
     </Grid>
 </UserControl>

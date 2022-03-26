@@ -1,33 +1,33 @@
 ﻿<UserControl x:Class="TLTDatabaseEditor.ExportDataView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:TLTDatabaseEditor"
              xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
-             mc:Ignorable="d"
              Dialog:DialogParticipation.Register="{Binding}">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
-        <DataGrid x:Name="BuildingsDataGrid"
-                      Grid.Column="0"
-                      ItemsSource="{Binding DBBuildings}"
-                      AutoGenerateColumns="False"
-                      SelectionChanged="BuildingSelectionChangedHandler"
-                      SelectionMode="Single"
-                      SelectedIndex="0"
-                      IsReadOnly="True"
-                      Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="90*"/>
+            <RowDefinition Height="10*"/>
+        </Grid.RowDefinitions>
+        <DataGrid SelectionChanged="BuildingSelectionChangedHandler" x:Name="BuildingsDataGrid" Grid.Row="0"
+              AutoGenerateColumns="false" SelectionMode="Single" SelectedIndex="0" IsReadOnly="true" Margin="10"
+              ItemsSource="{Binding DBBuildings}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Building Name" Binding="{Binding BuildingName}"/>
-                <DataGridTextColumn Header="Building Code" Binding="{Binding BuildingCode}"/>
+                <DataGridTextColumn Header="Building Name" Binding="{Binding Data.BuildingName}"/>
+                <DataGridTextColumn Header="Building Code" Binding="{Binding Data.BuildingCode}"/>
+                <DataGridTemplateColumn Header="Include">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        
-        <Button Height="100" Click="ExportAllHandler">Export All Data</Button>  
+        <Button Click="ExportAllHandler" Grid.Row="1" VerticalAlignment="Bottom" Height="70">
+            Export Selected Data
+        </Button>
     </Grid>
 </UserControl>
