@@ -33,7 +33,7 @@
                     <DataGridTemplateColumn Header="Enabled">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <CheckBox IsChecked="{Binding Enabled, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}"/>
+                                <CheckBox IsChecked="{Binding Enabled, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" Checked="BuildingCheckedHandler" Unchecked="BuildingUncheckedHandler"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -47,7 +47,7 @@
                     <DataGridTemplateColumn Header="Enabled">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <CheckBox IsChecked="{Binding Enabled, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                                <CheckBox IsChecked="{Binding Enabled, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Checked="ClassroomCheckedHandler" Unchecked="ClassroomUncheckedHandler"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -71,7 +71,7 @@
                     <DataGridTemplateColumn Header="Has Feature">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <CheckBox IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}"/>
+                                <CheckBox IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" Checked="FeatureCheckedHandler" Unchecked="FeatureUncheckedHandler"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -85,7 +85,7 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <RadioButton GroupName="ControlTypeRadioButtons"
-                             IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}"/>
+                             IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" Checked="ControlTypeCheckedHandler" Unchecked="ControlTypeUncheckedHandler"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -99,7 +99,7 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <RadioButton GroupName="TypeeRadioButtons"
-                             IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}"/>
+                             IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}" Checked="TypeCheckedHandler" Unchecked="TypeUncheckedHandler"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
